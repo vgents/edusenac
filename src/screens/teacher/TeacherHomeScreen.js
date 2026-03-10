@@ -23,6 +23,7 @@ import {
 } from '../../services/api';
 import { Button, SafeScreen, Icon } from '../../components/ui';
 import { spacing } from '../../styles/spacing';
+import { headerStyles } from '../../styles/headerStyles';
 
 export const TeacherHomeScreen = ({ navigation }) => {
   const { theme } = useTheme();
@@ -82,52 +83,52 @@ export const TeacherHomeScreen = ({ navigation }) => {
 
   return (
     <SafeScreen edges={['top']}>
+      {/* Header - fora do ScrollView para alinhar ícone com outras telas */}
+      <Animated.View
+        entering={FadeInDown.duration(400)}
+        style={[headerStyles.header, { backgroundColor: theme.background }]}
+      >
+        <View style={styles.headerLeft}>
+          <TouchableOpacity
+            onPress={() => navigation.navigate('TeacherPerfil')}
+            activeOpacity={0.7}
+          >
+            <View style={[styles.avatar, { backgroundColor: theme.primary }]}>
+              {teacher?.photo ? (
+                <Image source={{ uri: teacher.photo }} style={styles.avatarImage} />
+              ) : (
+                <Icon name="person" size={32} color="#FFFFFF" />
+              )}
+            </View>
+          </TouchableOpacity>
+          <View>
+            <Text style={[styles.greeting, { color: theme.textSecondary }]}>
+              Olá, {firstName}
+            </Text>
+            <Text style={[styles.name, { color: theme.text }]}>
+              {teacher?.name || 'Professor'}
+            </Text>
+            {teacher?.department ? (
+              <Text style={[styles.department, { color: theme.textSecondary }]}>
+                {teacher.department}
+              </Text>
+            ) : null}
+          </View>
+        </View>
+        <View style={styles.headerIcons}>
+          <TouchableOpacity style={headerStyles.iconButton} onPress={() => {}}>
+            <Icon name="notifications-outline" size={24} color={theme.text} />
+          </TouchableOpacity>
+          <TouchableOpacity style={headerStyles.menuBtn} onPress={openMenu}>
+            <Icon name="menu" size={24} color={theme.text} />
+          </TouchableOpacity>
+        </View>
+      </Animated.View>
+
       <ScrollView
         style={[styles.container, { backgroundColor: theme.background }]}
         showsVerticalScrollIndicator={false}
       >
-        {/* Header com nome + departamento */}
-        <Animated.View
-          entering={FadeInDown.duration(400)}
-          style={[styles.header, { backgroundColor: theme.background }]}
-        >
-          <View style={styles.headerLeft}>
-            <TouchableOpacity
-              onPress={() => navigation.navigate('TeacherPerfil')}
-              activeOpacity={0.7}
-            >
-              <View style={[styles.avatar, { backgroundColor: theme.primary }]}>
-                {teacher?.photo ? (
-                  <Image source={{ uri: teacher.photo }} style={styles.avatarImage} />
-                ) : (
-                  <Icon name="person" size={32} color="#FFFFFF" />
-                )}
-              </View>
-            </TouchableOpacity>
-            <View>
-              <Text style={[styles.greeting, { color: theme.textSecondary }]}>
-                Olá, {firstName}
-              </Text>
-              <Text style={[styles.name, { color: theme.text }]}>
-                {teacher?.name || 'Professor'}
-              </Text>
-              {teacher?.department ? (
-                <Text style={[styles.department, { color: theme.textSecondary }]}>
-                  {teacher.department}
-                </Text>
-              ) : null}
-            </View>
-          </View>
-          <View style={styles.headerIcons}>
-            <TouchableOpacity style={styles.iconButton} onPress={() => {}}>
-              <Icon name="notifications-outline" size={24} color={theme.text} />
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.iconButton} onPress={openMenu}>
-              <Icon name="menu" size={24} color={theme.text} />
-            </TouchableOpacity>
-          </View>
-        </Animated.View>
-
         {/* Indicadores rápidos */}
         <Animated.View
           entering={FadeInDown.duration(400).delay(80)}
@@ -233,15 +234,12 @@ export const TeacherHomeScreen = ({ navigation }) => {
 
 const styles = StyleSheet.create({
   container: { flex: 1 },
-  header: {
+  headerLeft: {
+    flex: 1,
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'space-between',
-    paddingHorizontal: spacing.lg,
-    paddingTop: spacing.md,
-    paddingBottom: spacing.base,
+    minWidth: 0,
   },
-  headerLeft: { flexDirection: 'row', alignItems: 'center' },
   avatar: {
     width: 52,
     height: 52,
@@ -252,11 +250,14 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
   },
   avatarImage: { width: '100%', height: '100%', resizeMode: 'cover' },
-  headerIcons: { flexDirection: 'row', gap: spacing.base },
+  headerIcons: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: spacing.sm,
+  },
   greeting: { fontSize: 14 },
   name: { fontSize: 22, fontWeight: '700' },
   department: { fontSize: 13, marginTop: 2 },
-  iconButton: { padding: spacing.sm },
   indicatorsRow: {
     flexDirection: 'row',
     gap: spacing.base,

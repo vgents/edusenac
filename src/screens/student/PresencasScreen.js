@@ -32,6 +32,7 @@ import {
   getDisciplinaDetalhe,
 } from '../../services/api';
 import { spacing } from '../../styles/spacing';
+import { headerStyles } from '../../styles/headerStyles';
 import { Icon, SafeScreen, Button } from '../../components/ui';
 
 const { width } = Dimensions.get('window');
@@ -158,9 +159,9 @@ export const PresencasScreen = ({ navigation }) => {
 
   return (
     <SafeScreen edges={['top']}>
-      <View style={[styles.header, { backgroundColor: theme.background }]}>
+      <View style={[headerStyles.header, { backgroundColor: theme.background }]}>
         <Text style={[styles.headerTitle, { color: theme.text }]}>Presenças</Text>
-        <TouchableOpacity style={styles.menuBtn} onPress={openMenu}>
+        <TouchableOpacity style={headerStyles.menuBtn} onPress={openMenu}>
           <Icon name="menu" size={24} color={theme.text} />
         </TouchableOpacity>
       </View>
@@ -443,16 +444,7 @@ export const PresencasScreen = ({ navigation }) => {
 };
 
 const styles = StyleSheet.create({
-  header: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    paddingHorizontal: spacing.base,
-    paddingTop: spacing.md,
-    paddingBottom: spacing.sm,
-  },
   headerTitle: { fontSize: 20, fontWeight: '700' },
-  menuBtn: { padding: spacing.sm },
   container: { flex: 1 },
   registrarCard: {
     margin: spacing.base,

@@ -22,6 +22,17 @@ import { useAuth } from '../../context/AuthContext';
 import { storage } from '../../utils/storage';
 import { spacing } from '../../styles/spacing';
 
+const hexToRgba = (hex, alpha) => {
+  const h = String(hex).replace('#', '');
+  if (h.length === 6) {
+    const r = parseInt(h.slice(0, 2), 16);
+    const g = parseInt(h.slice(2, 4), 16);
+    const b = parseInt(h.slice(4, 6), 16);
+    return `rgba(${r},${g},${b},${alpha})`;
+  }
+  return hex;
+};
+
 const { width } = Dimensions.get('window');
 const SIMULATE_KEY = '@edusenac_simulate_faculdade_fora';
 const RADIUS = 500;
@@ -245,9 +256,13 @@ export const RegistrarPresencaScreen = ({ route, navigation }) => {
             style={
               !isWithinRadius()
                 ? { backgroundColor: theme.border, opacity: 1 }
-                : {
-                    backgroundColor: isDarkMode ? theme.accent : theme.primary,
-                  }
+                : isDarkMode
+                  ? {
+                      backgroundColor: hexToRgba(theme.primary, 0.35),
+                      borderWidth: 1,
+                      borderColor: 'rgba(255,255,255,0.15)',
+                    }
+                  : { backgroundColor: theme.primary }
             }
             textStyle={
               !isWithinRadius()

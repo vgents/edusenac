@@ -2,25 +2,29 @@
  * MenuDrawer - Drawer lateral com Configurações e Sair (na base)
  */
 
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   View,
   Text,
   StyleSheet,
-  Modal,
   Pressable,
   TouchableOpacity,
   Dimensions,
+  Platform,
+  BackHandler,
 } from 'react-native';
+import { BlurView } from 'expo-blur';
 import Animated, {
   useAnimatedStyle,
   useSharedValue,
   withTiming,
+  runOnJS,
 } from 'react-native-reanimated';
 import { useTheme } from '../../context/ThemeContext';
 import { useAuth } from '../../context/AuthContext';
 import { useMenu } from '../../context/MenuContext';
 import { navigate } from '../../navigationRef';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Icon } from '../ui';
 import { spacing } from '../../styles/spacing';
 
@@ -28,19 +32,37 @@ const { width } = Dimensions.get('window');
 const DRAWER_WIDTH = width * 0.75;
 
 export const MenuDrawer = () => {
-  const { theme } = useTheme();
+  const insets = useSafeAreaInsets();
+  const { theme, isDarkMode } = useTheme();
   const { logout } = useAuth();
   const { visible, closeMenu } = useMenu();
+  const [shouldRender, setShouldRender] = useState(false);
   const translateX = useSharedValue(DRAWER_WIDTH);
+  const overlayOpacity = useSharedValue(0);
 
-  React.useEffect(() => {
-    translateX.value = withTiming(visible ? 0 : DRAWER_WIDTH, {
-      duration: 280,
-    });
+  useEffect(() => {
+    if (visible) {
+      setShouldRender(true);
+      overlayOpacity.value = withTiming(1, { duration: 200 });
+      translateX.value = withTiming(0, { duration: 280 });
+    } else {
+      overlayOpacity.value = withTiming(0, { duration: 180 });
+      translateX.value = withTiming(
+        DRAWER_WIDTH,
+        { duration: 220 },
+        (finished) => {
+          if (finished) runOnJS(setShouldRender)(false);
+        }
+      );
+    }
   }, [visible]);
 
   const drawerStyle = useAnimatedStyle(() => ({
     transform: [{ translateX: translateX.value }],
+  }));
+
+  const blurOverlayStyle = useAnimatedStyle(() => ({
+    opacity: overlayOpacity.value,
   }));
 
   const handleConfiguracoes = () => {
@@ -53,25 +75,68 @@ export const MenuDrawer = () => {
     logout();
   };
 
-  if (!visible) return null;
+  useEffect(() => {
+    if (!visible) return;
+    const sub = BackHandler.addEventListener('hardwareBackPress', () => {
+      closeMenu();
+      return true;
+    });
+    return () => sub.remove();
+  }, [visible, closeMenu]);
+
+  if (!shouldRender) return null;
 
   return (
-    <Modal
-      visible={visible}
-      transparent
-      animationType="none"
-      onRequestClose={closeMenu}
-    >
-      <Pressable style={styles.overlay} onPress={closeMenu}>
-        <Animated.View
-          style={[
-            styles.drawer,
-            { backgroundColor: theme.surface },
-            drawerStyle,
-          ]}
-          onStartShouldSetResponder={() => true}
-        >
-          <View style={[styles.header, { borderBottomColor: theme.border }]}>
+    <View style={StyleSheet.absoluteFill} pointerEvents="box-none">
+      {/* Blur overlay - cobre toda a tela, efeito aparecer/desaparecer */}
+      <Animated.View
+        style={[styles.blurOverlayFull, blurOverlayStyle]}
+        pointerEvents="auto"
+      >
+        <Pressable style={StyleSheet.absoluteFill} onPress={closeMenu}>
+          {Platform.OS === 'web' ? (
+            <View style={styles.blurFallback} />
+          ) : (
+            <View style={StyleSheet.absoluteFill}>
+              <BlurView
+                intensity={100}
+                tint={isDarkMode ? 'dark' : 'light'}
+                style={StyleSheet.absoluteFill}
+                experimentalBlurMethod="dimezisBlurView"
+              />
+              <View
+                style={[
+                  StyleSheet.absoluteFill,
+                  {
+                    backgroundColor: isDarkMode
+                      ? 'rgba(10,22,40,0.15)'
+                      : 'rgba(255,255,255,0.08)',
+                  },
+                ]}
+              />
+            </View>
+          )}
+        </Pressable>
+      </Animated.View>
+
+      {/* Menu drawer - única parte que desliza da direita */}
+      <Animated.View
+        style={[
+          styles.drawer,
+          { backgroundColor: theme.surface },
+          drawerStyle,
+        ]}
+        onStartShouldSetResponder={() => true}
+      >
+          <View
+            style={[
+              styles.header,
+              {
+                borderBottomColor: theme.border,
+                paddingTop: insets.top + spacing.md,
+              },
+            ]}
+          >
             <Text style={[styles.title, { color: theme.text }]}>Menu</Text>
             <TouchableOpacity
               onPress={closeMenu}
@@ -106,21 +171,25 @@ export const MenuDrawer = () => {
             </TouchableOpacity>
           </View>
         </Animated.View>
-      </Pressable>
-    </Modal>
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
-  overlay: {
-    flex: 1,
-    flexDirection: 'row',
-    justifyContent: 'flex-end',
+  blurOverlayFull: {
+    ...StyleSheet.absoluteFillObject,
+    overflow: 'hidden',
+  },
+  blurFallback: {
+    ...StyleSheet.absoluteFillObject,
     backgroundColor: 'rgba(0,0,0,0.4)',
   },
   drawer: {
+    position: 'absolute',
+    right: 0,
+    top: 0,
+    bottom: 0,
     width: DRAWER_WIDTH,
-    flex: 1,
     shadowColor: '#000',
     shadowOffset: { width: -2, height: 0 },
     shadowOpacity: 0.15,
@@ -132,7 +201,6 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     paddingHorizontal: spacing.lg,
-    paddingTop: spacing.xl,
     paddingBottom: spacing.base,
     borderBottomWidth: 1,
     borderBottomColor: 'rgba(0,0,0,0.06)',

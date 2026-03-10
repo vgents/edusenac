@@ -21,6 +21,7 @@ import {
   getAttendanceByClassAndDate,
 } from '../../services/api';
 import { spacing } from '../../styles/spacing';
+import { headerStyles } from '../../styles/headerStyles';
 import { SafeScreen, Icon } from '../../components/ui';
 
 export const HistoricoChamadasScreen = ({ route, navigation }) => {
@@ -66,20 +67,20 @@ export const HistoricoChamadasScreen = ({ route, navigation }) => {
 
   return (
     <SafeScreen>
-      <View style={[styles.header, { backgroundColor: theme.background }]}>
+      <View style={[headerStyles.header, { backgroundColor: theme.background }]}>
         {showBack ? (
           <TouchableOpacity
             onPress={() => navigation.goBack()}
             activeOpacity={0.8}
-            style={styles.backBtn}
+            style={headerStyles.menuBtn}
           >
             <Icon name="arrow-back" size={24} color={theme.text} />
           </TouchableOpacity>
         ) : (
-          <View style={styles.headerSpacer} />
+          <View style={headerStyles.menuBtn} />
         )}
         <Text style={[styles.headerTitle, { color: theme.text }]}>Chamadas</Text>
-        <TouchableOpacity style={styles.menuBtn} onPress={openMenu}>
+        <TouchableOpacity style={headerStyles.menuBtn} onPress={openMenu}>
           <Icon name="menu" size={24} color={theme.text} />
         </TouchableOpacity>
       </View>
@@ -175,23 +176,7 @@ export const HistoricoChamadasScreen = ({ route, navigation }) => {
 };
 
 const styles = StyleSheet.create({
-  header: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    paddingHorizontal: spacing.base,
-    paddingTop: spacing.md,
-    paddingBottom: spacing.sm,
-  },
-  headerSpacer: { width: 40 },
   headerTitle: { fontSize: 20, fontWeight: '700', flex: 1, textAlign: 'center' },
-  menuBtn: { padding: spacing.sm },
-  backBtn: {
-    width: 40,
-    height: 40,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
   container: { flex: 1 },
   content: { paddingTop: spacing.xl, paddingBottom: spacing.xxl },
   title: { fontSize: 24, fontWeight: '700', marginBottom: spacing.lg },

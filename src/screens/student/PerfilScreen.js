@@ -10,6 +10,7 @@ import { useMenu } from '../../context/MenuContext';
 import { getStudent } from '../../services/api';
 import { SafeScreen, GlassCard } from '../../components/ui';
 import { spacing } from '../../styles/spacing';
+import { headerStyles } from '../../styles/headerStyles';
 import { Icon } from '../../components/ui';
 
 export const PerfilScreen = ({ navigation }) => {
@@ -26,16 +27,16 @@ export const PerfilScreen = ({ navigation }) => {
 
   return (
     <SafeScreen edges={['top']}>
-      <View style={[styles.topBar, { backgroundColor: theme.background }]}>
+      <View style={[headerStyles.header, styles.topBar, { backgroundColor: theme.background }]}>
         <TouchableOpacity
           onPress={() => navigation.goBack()}
           activeOpacity={0.8}
-          style={styles.backBtn}
+          style={headerStyles.menuBtn}
         >
           <Icon name="arrow-back" size={24} color={theme.text} />
         </TouchableOpacity>
         <Text style={[styles.topBarTitle, { color: theme.text }]}>Perfil</Text>
-        <TouchableOpacity style={styles.menuBtn} onPress={openMenu}>
+        <TouchableOpacity style={headerStyles.menuBtn} onPress={openMenu}>
           <Icon name="menu" size={24} color={theme.text} />
         </TouchableOpacity>
       </View>
@@ -78,22 +79,8 @@ export const PerfilScreen = ({ navigation }) => {
 };
 
 const styles = StyleSheet.create({
-  topBar: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    paddingHorizontal: spacing.base,
-    paddingTop: spacing.md,
-    paddingBottom: spacing.sm,
-  },
-  backBtn: {
-    width: 40,
-    height: 40,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
+  topBar: {},
   topBarTitle: { fontSize: 20, fontWeight: '700', flex: 1, textAlign: 'center' },
-  menuBtn: { padding: spacing.sm },
   container: { flex: 1, padding: spacing.base },
   header: {
     padding: spacing.xl,

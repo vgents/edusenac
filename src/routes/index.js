@@ -5,7 +5,7 @@
 
 import React from 'react';
 import { NavigationContainer, DefaultTheme } from '@react-navigation/native';
-import { ActivityIndicator, StyleSheet } from 'react-native';
+import { View, ActivityIndicator, StyleSheet } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useAuth } from '../context/AuthContext';
 import { useTheme } from '../context/ThemeContext';
@@ -43,7 +43,7 @@ const RouterContent = () => {
   };
 
   return (
-    <>
+    <View style={styles.root}>
       <NavigationContainer ref={navigationRef} theme={navTheme}>
         {!user ? (
           <AuthRoutes />
@@ -56,7 +56,7 @@ const RouterContent = () => {
         )}
       </NavigationContainer>
       {user && <MenuDrawer />}
-    </>
+    </View>
   );
 };
 
@@ -67,6 +67,7 @@ export const Router = () => (
 );
 
 const styles = StyleSheet.create({
+  root: { flex: 1 },
   loading: {
     flex: 1,
     justifyContent: 'center',

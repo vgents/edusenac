@@ -18,6 +18,7 @@ import { useMenu } from '../../context/MenuContext';
 import { getTeacher } from '../../services/api';
 import { SafeScreen, Icon } from '../../components/ui';
 import { spacing } from '../../styles/spacing';
+import { headerStyles } from '../../styles/headerStyles';
 
 export const TeacherPerfilScreen = ({ navigation }) => {
   const { theme } = useTheme();
@@ -33,9 +34,10 @@ export const TeacherPerfilScreen = ({ navigation }) => {
 
   return (
     <SafeScreen edges={['top']}>
-      <View style={[styles.topBar, { backgroundColor: theme.background }]}>
+      <View style={[headerStyles.header, { backgroundColor: theme.background }]}>
+        <View style={headerStyles.menuBtn} />
         <Text style={[styles.topBarTitle, { color: theme.text }]}>Perfil</Text>
-        <TouchableOpacity style={styles.menuBtn} onPress={openMenu}>
+        <TouchableOpacity style={headerStyles.menuBtn} onPress={openMenu}>
           <Icon name="menu" size={24} color={theme.text} />
         </TouchableOpacity>
       </View>
@@ -89,16 +91,7 @@ export const TeacherPerfilScreen = ({ navigation }) => {
 };
 
 const styles = StyleSheet.create({
-  topBar: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    paddingHorizontal: spacing.base,
-    paddingTop: spacing.md,
-    paddingBottom: spacing.sm,
-  },
-  topBarTitle: { fontSize: 20, fontWeight: '700' },
-  menuBtn: { padding: spacing.sm },
+  topBarTitle: { fontSize: 20, fontWeight: '700', flex: 1, textAlign: 'center' },
   container: { flex: 1, padding: spacing.base },
   header: {
     padding: spacing.xl,

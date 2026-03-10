@@ -18,6 +18,7 @@ import { useAuth } from '../../context/AuthContext';
 import { useMenu } from '../../context/MenuContext';
 import { getClasses, getSubjectById } from '../../services/api';
 import { spacing } from '../../styles/spacing';
+import { headerStyles } from '../../styles/headerStyles';
 import { Icon, SafeScreen } from '../../components/ui';
 
 const SEMESTER_OPTIONS = ['2023.2', '2024.1', '2024.2'];
@@ -51,9 +52,9 @@ export const AulasScreen = ({ navigation }) => {
 
   return (
     <SafeScreen edges={['top']}>
-      <View style={[styles.header, { backgroundColor: theme.background }]}>
+      <View style={[headerStyles.header, { backgroundColor: theme.background }]}>
         <Text style={[styles.headerTitle, { color: theme.text }]}>Aulas</Text>
-        <TouchableOpacity style={styles.menuBtn} onPress={openMenu}>
+        <TouchableOpacity style={headerStyles.menuBtn} onPress={openMenu}>
           <Icon name="menu" size={24} color={theme.text} />
         </TouchableOpacity>
       </View>
@@ -180,16 +181,7 @@ export const AulasScreen = ({ navigation }) => {
 };
 
 const styles = StyleSheet.create({
-  header: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    paddingHorizontal: spacing.base,
-    paddingTop: spacing.md,
-    paddingBottom: spacing.sm,
-  },
   headerTitle: { fontSize: 20, fontWeight: '700' },
-  menuBtn: { padding: spacing.sm },
   container: { flex: 1, padding: spacing.base },
   filter: { marginBottom: spacing.base, borderRadius: 12, overflow: 'hidden' },
   filterCard: {

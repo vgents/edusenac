@@ -7,6 +7,7 @@ import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from 'react-nati
 import { useTheme } from '../../context/ThemeContext';
 import { useMenu } from '../../context/MenuContext';
 import { spacing } from '../../styles/spacing';
+import { headerStyles } from '../../styles/headerStyles';
 import { Icon, SafeScreen } from '../../components/ui';
 
 const MENU_ITEMS = [
@@ -21,9 +22,9 @@ export const MaisScreen = ({ navigation }) => {
 
   return (
     <SafeScreen edges={['top']}>
-      <View style={[styles.header, { backgroundColor: theme.background }]}>
+      <View style={[headerStyles.header, { backgroundColor: theme.background }]}>
         <Text style={[styles.title, { color: theme.text }]}>Mais</Text>
-        <TouchableOpacity style={styles.menuBtn} onPress={openMenu}>
+        <TouchableOpacity style={headerStyles.menuBtn} onPress={openMenu}>
           <Icon name="menu" size={24} color={theme.text} />
         </TouchableOpacity>
       </View>
@@ -56,16 +57,7 @@ export const MaisScreen = ({ navigation }) => {
 };
 
 const styles = StyleSheet.create({
-  header: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    paddingHorizontal: spacing.lg,
-    paddingTop: spacing.md,
-    paddingBottom: spacing.sm,
-  },
   title: { fontSize: 24, fontWeight: '700' },
-  menuBtn: { padding: spacing.sm },
   container: { flex: 1, padding: spacing.base },
   subtitle: { fontSize: 16, marginBottom: spacing.xl },
   card: {

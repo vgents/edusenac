@@ -9,10 +9,22 @@ import { useAuth } from '../../context/AuthContext';
 import { useMenu } from '../../context/MenuContext';
 import { getPaymentsByStudent } from '../../services/api';
 import { spacing } from '../../styles/spacing';
+import { headerStyles } from '../../styles/headerStyles';
 import { Icon, SafeScreen } from '../../components/ui';
 
+const hexToRgba = (hex, alpha) => {
+  const h = String(hex).replace('#', '');
+  if (h.length === 6) {
+    const r = parseInt(h.slice(0, 2), 16);
+    const g = parseInt(h.slice(2, 4), 16);
+    const b = parseInt(h.slice(4, 6), 16);
+    return `rgba(${r},${g},${b},${alpha})`;
+  }
+  return hex;
+};
+
 export const FinanceiroScreen = () => {
-  const { theme } = useTheme();
+  const { theme, isDarkMode } = useTheme();
   const { user } = useAuth();
   const { openMenu } = useMenu();
   const [payments, setPayments] = useState([]);
@@ -32,14 +44,25 @@ export const FinanceiroScreen = () => {
 
   return (
     <SafeScreen>
-      <View style={[styles.header, { backgroundColor: theme.background }]}>
+      <View style={[headerStyles.header, { backgroundColor: theme.background }]}>
         <Text style={[styles.headerTitle, { color: theme.text }]}>Financeiro</Text>
-        <TouchableOpacity style={styles.menuBtn} onPress={openMenu}>
+        <TouchableOpacity style={headerStyles.menuBtn} onPress={openMenu}>
           <Icon name="menu" size={24} color={theme.text} />
         </TouchableOpacity>
       </View>
       <ScrollView style={[styles.container, { backgroundColor: theme.background }]}>
-      <View style={[styles.summary, { backgroundColor: theme.primary }]}>
+      <View
+        style={[
+          styles.summary,
+          {
+            backgroundColor: isDarkMode
+              ? hexToRgba(theme.primary, 0.35)
+              : theme.primary,
+            borderWidth: isDarkMode ? 1 : 0,
+            borderColor: isDarkMode ? 'rgba(255,255,255,0.15)' : undefined,
+          },
+        ]}
+      >
         <Text style={styles.summaryLabel}>Pendente</Text>
         <Text style={styles.summaryValue}>
           R$ {totalPending.toFixed(2).replace('.', ',')}
@@ -86,7 +109,14 @@ export const FinanceiroScreen = () => {
             </Text>
             {p.status === 'pending' && (
               <TouchableOpacity
-                style={[styles.button, { backgroundColor: theme.primary }]}
+                style={[
+                  styles.button,
+                  {
+                    backgroundColor: isDarkMode
+                      ? hexToRgba(theme.primary, 0.35)
+                      : theme.primary,
+                  },
+                ]}
                 onPress={() => {}}
               >
                 <Text style={styles.buttonText}>Ver boleto</Text>
@@ -101,16 +131,7 @@ export const FinanceiroScreen = () => {
 };
 
 const styles = StyleSheet.create({
-  header: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    paddingHorizontal: spacing.base,
-    paddingTop: spacing.md,
-    paddingBottom: spacing.sm,
-  },
   headerTitle: { fontSize: 20, fontWeight: '700' },
-  menuBtn: { padding: spacing.sm },
   container: { flex: 1 },
   summary: {
     margin: spacing.base,

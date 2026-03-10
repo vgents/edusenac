@@ -23,6 +23,7 @@ import { useTheme } from '../../context/ThemeContext';
 import { useAuth } from '../../context/AuthContext';
 import { useMenu } from '../../context/MenuContext';
 import { spacing } from '../../styles/spacing';
+import { headerStyles } from '../../styles/headerStyles';
 import { SafeScreen, Icon } from '../../components/ui';
 import { getAulasByDate, getAttendanceByStudentAndDate } from '../../services/api';
 
@@ -144,9 +145,9 @@ export const AgendaScreen = () => {
 
   return (
     <SafeScreen edges={['top']}>
-      <View style={[styles.header, { backgroundColor: theme.background }]}>
+      <View style={[headerStyles.header, { backgroundColor: theme.background }]}>
         <Text style={[styles.headerTitle, { color: theme.text }]}>Agenda</Text>
-        <TouchableOpacity style={styles.menuBtn} onPress={openMenu}>
+        <TouchableOpacity style={headerStyles.menuBtn} onPress={openMenu}>
           <Icon name="menu" size={24} color={theme.text} />
         </TouchableOpacity>
       </View>
@@ -322,16 +323,7 @@ export const AgendaScreen = () => {
 };
 
 const styles = StyleSheet.create({
-  header: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    paddingHorizontal: spacing.base,
-    paddingTop: spacing.md,
-    paddingBottom: spacing.sm,
-  },
   headerTitle: { fontSize: 20, fontWeight: '700' },
-  menuBtn: { padding: spacing.sm },
   container: { flex: 1 },
   calendar: {
     margin: spacing.base,

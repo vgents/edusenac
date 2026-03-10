@@ -30,7 +30,8 @@ import {
   getAulas,
 } from '../../services/api';
 import { spacing } from '../../styles/spacing';
-import { blue } from '../../styles/colors';
+import { headerStyles } from '../../styles/headerStyles';
+import { blue, darkBlue } from '../../styles/colors';
 
 const { width } = Dimensions.get('window');
 
@@ -86,7 +87,7 @@ function getAulaStatus(aula) {
 }
 
 export const StudentHomeScreen = ({ navigation }) => {
-  const { theme } = useTheme();
+  const { theme, isDarkMode } = useTheme();
   const insets = useSafeAreaInsets();
   const { user } = useAuth();
   const { openMenu } = useMenu();
@@ -173,58 +174,63 @@ export const StudentHomeScreen = ({ navigation }) => {
 
   return (
     <SafeScreen edges={['top']}>
+      {/* Header - fora do ScrollView para alinhar ícone com outras telas */}
+      <View style={[headerStyles.header, { backgroundColor: theme.background }]}>
+        <View style={styles.headerLeft}>
+          <TouchableOpacity
+            onPress={() => navigation.navigate('Perfil')}
+            activeOpacity={0.7}
+          >
+            <View style={[styles.avatar, { backgroundColor: theme.primary }]}>
+              {student?.photo ? (
+                <Image source={{ uri: student.photo }} style={styles.avatarImage} />
+              ) : (
+                <Icon name="person" size={28} color="#FFFFFF" />
+              )}
+            </View>
+          </TouchableOpacity>
+          <View>
+            <Text style={[styles.greeting, { color: theme.textSecondary }]}>
+              Olá 👋
+            </Text>
+            <Text style={[styles.name, { color: theme.text }]}>{firstName}!</Text>
+            {courseName ? (
+              <Text style={[styles.courseName, { color: theme.textSecondary }]}>
+                {courseName}
+              </Text>
+            ) : null}
+          </View>
+        </View>
+        <View style={styles.headerIcons}>
+          <TouchableOpacity style={headerStyles.iconButton} onPress={() => {}}>
+            <Icon name="notifications-outline" size={24} color={theme.text} />
+          </TouchableOpacity>
+          <TouchableOpacity style={headerStyles.iconButton} onPress={() => {}}>
+            <Icon name="search" size={24} color={theme.text} />
+          </TouchableOpacity>
+          <TouchableOpacity style={headerStyles.menuBtn} onPress={openMenu}>
+            <Icon name="menu" size={24} color={theme.text} />
+          </TouchableOpacity>
+        </View>
+      </View>
+
       <ScrollView
         style={[styles.container, { backgroundColor: theme.background }]}
         showsVerticalScrollIndicator={false}
       >
-        {/* Header */}
-        <View style={[styles.header, { backgroundColor: theme.background }]}>
-          <View style={styles.headerLeft}>
-            <TouchableOpacity
-              onPress={() => navigation.navigate('Perfil')}
-              activeOpacity={0.7}
-            >
-              <View style={[styles.avatar, { backgroundColor: theme.primary }]}>
-                {student?.photo ? (
-                  <Image source={{ uri: student.photo }} style={styles.avatarImage} />
-                ) : (
-                  <Icon name="person" size={28} color="#FFFFFF" />
-                )}
-              </View>
-            </TouchableOpacity>
-            <View>
-              <Text style={[styles.greeting, { color: theme.textSecondary }]}>
-                Olá 👋
-              </Text>
-              <Text style={[styles.name, { color: theme.text }]}>{firstName}!</Text>
-              {courseName ? (
-                <Text style={[styles.courseName, { color: theme.textSecondary }]}>
-                  {courseName}
-                </Text>
-              ) : null}
-            </View>
-          </View>
-          <View style={styles.headerIcons}>
-            <TouchableOpacity style={styles.iconButton} onPress={() => {}}>
-              <Icon name="notifications-outline" size={24} color={theme.text} />
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.iconButton} onPress={() => {}}>
-              <Icon name="search" size={24} color={theme.text} />
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.iconButton} onPress={openMenu}>
-              <Icon name="menu" size={24} color={theme.text} />
-            </TouchableOpacity>
-          </View>
-        </View>
-
         {/* Banner Promocional */}
         <View
           style={[
             styles.banner,
             {
-              backgroundColor: hexToRgba(theme.primary, 0.82),
+              backgroundColor: hexToRgba(
+                theme.primary,
+                isDarkMode ? 0.35 : 0.82
+              ),
               borderWidth: 1,
-              borderColor: 'rgba(255,255,255,0.2)',
+              borderColor: isDarkMode
+                ? 'rgba(255,255,255,0.15)'
+                : 'rgba(255,255,255,0.2)',
             },
           ]}
         >
@@ -234,10 +240,25 @@ export const StudentHomeScreen = ({ navigation }) => {
               Matricule-se e aproveite 3 aulas gratuitas para experimentar.
             </Text>
             <TouchableOpacity
-              style={[styles.bannerButton, { backgroundColor: theme.accent }]}
+              style={[
+                styles.bannerButton,
+                {
+                  backgroundColor: isDarkMode ? '#FFFFFF' : theme.accent,
+                },
+              ]}
               onPress={() => {}}
             >
-              <Text style={styles.bannerButtonText}>Saiba mais</Text>
+              <Text
+                style={[
+                  styles.bannerButtonText,
+                  {
+                    color: isDarkMode ? darkBlue[900] : '#FFFFFF',
+                    fontSize: isDarkMode ? 16 : 14,
+                  },
+                ]}
+              >
+                Saiba mais
+              </Text>
             </TouchableOpacity>
           </View>
           <View style={styles.bannerIllustration}>
@@ -258,7 +279,13 @@ export const StudentHomeScreen = ({ navigation }) => {
               style={[
                 styles.categoryPill,
                 selectedCategory === i && {
-                  backgroundColor: theme.primary,
+                  backgroundColor: isDarkMode
+                    ? hexToRgba(theme.primary, 0.35)
+                    : theme.primary,
+                  borderWidth: isDarkMode ? 1 : 0,
+                  borderColor: isDarkMode
+                    ? 'rgba(255,255,255,0.15)'
+                    : undefined,
                 },
                 selectedCategory !== i && {
                   backgroundColor: theme.background,
@@ -300,7 +327,14 @@ export const StudentHomeScreen = ({ navigation }) => {
                 onPress={() =>
                   navigation.navigate('RegistrarPresenca', { classId: currentClass.id })
                 }
-                style={styles.registerButton}
+                style={[
+                  styles.registerButton,
+                  isDarkMode && {
+                    backgroundColor: hexToRgba(theme.primary, 0.35),
+                    borderWidth: 1,
+                    borderColor: 'rgba(255,255,255,0.15)',
+                  },
+                ]}
               />
             </View>
           </View>
@@ -564,17 +598,11 @@ export const StudentHomeScreen = ({ navigation }) => {
 
 const styles = StyleSheet.create({
   container: { flex: 1 },
-  header: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    paddingHorizontal: spacing.lg,
-    paddingTop: spacing.md,
-    paddingBottom: spacing.base,
-  },
   headerLeft: {
+    flex: 1,
     flexDirection: 'row',
     alignItems: 'center',
+    minWidth: 0,
   },
   avatar: {
     width: 48,
@@ -602,10 +630,8 @@ const styles = StyleSheet.create({
   },
   headerIcons: {
     flexDirection: 'row',
-    gap: spacing.base,
-  },
-  iconButton: {
-    padding: spacing.sm,
+    alignItems: 'center',
+    gap: spacing.sm,
   },
   banner: {
     marginHorizontal: spacing.lg,
@@ -643,9 +669,7 @@ const styles = StyleSheet.create({
     alignSelf: 'flex-start',
   },
   bannerButtonText: {
-    color: '#FFFFFF',
     fontWeight: '600',
-    fontSize: 14,
   },
   bannerIllustration: {
     marginLeft: spacing.base,
