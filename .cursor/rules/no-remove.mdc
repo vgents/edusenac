@@ -1,0 +1,11 @@
+---
+description: Não remover código ou componentes sem solicitação explícita do usuário
+alwaysApply: true
+---
+
+# Regra: Não remover sem solicitação
+
+- **Nunca remover** código, componentes, telas ou funcionalidades existentes sem que o usuário solicite explicitamente.
+- Ao refatorar ou adicionar novas features, **preservar** o que já existe.
+- Se houver dúvida sobre remover algo, **manter** e perguntar ao usuário.
+- Exceção: correção de bugs que exijam remoção pontual (documentar o motivo).
