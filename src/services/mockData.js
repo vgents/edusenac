@@ -18,6 +18,7 @@ export const mockStudents = [
     name: 'João Silva',
     email: 'aluno@edusenac.com',
     enrollment: '2024001',
+    cpf: '12345678901',
     courseId: '1',
     photo: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400',
   },
@@ -30,6 +31,7 @@ export const mockTeachers = [
     name: 'Maria Santos',
     email: 'professor@edusenac.com',
     employeeId: 'EMP001',
+    cpf: '98765432100',
     department: 'Tecnologia da Informação',
     photo: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=600',
     rating: 4.8,
@@ -96,11 +98,11 @@ export const mockCourses = [
   { id: '2', name: 'Administração', code: 'ADM' },
 ];
 
-// Disciplinas
+// Disciplinas (carga horária em horas)
 export const mockSubjects = [
-  { id: '1', name: 'Programação Mobile', code: 'PM', courseId: '1' },
-  { id: '2', name: 'Banco de Dados', code: 'BD', courseId: '1' },
-  { id: '3', name: 'Desenvolvimento Web', code: 'DW', courseId: '1' },
+  { id: '1', name: 'Programação Mobile', code: 'PM', courseId: '1', workload: 80 },
+  { id: '2', name: 'Banco de Dados', code: 'BD', courseId: '1', workload: 60 },
+  { id: '3', name: 'Desenvolvimento Web', code: 'DW', courseId: '1', workload: 80 },
 ];
 
 // Turmas/Aulas (compatibilidade com API existente)
@@ -979,17 +981,21 @@ export const mockAttendance = [
   { id: '27', studentId: '1', classId: '30', date: '2024-08-26', status: 'present', timestamp: null, latitude: null, longitude: null },
 ];
 
-// Chamadas (Professor)
+// Chamadas (Professor) - Histórico mockado por turma (teacherId 1 = Maria)
 export const mockCalls = [
-  {
-    id: '1',
-    classId: '1',
-    teacherId: '1',
-    startTime: '2024-03-05T08:00:00',
-    endTime: null,
-    status: 'active',
-    attendanceList: [],
-  },
+  // Turma 1 - Programação Mobile (teacher 1)
+  { id: 'c1', classId: '1', teacherId: '1', startTime: '2024-03-11T08:00:00', endTime: '2024-03-11T10:00:00', status: 'ended', attendanceList: [] },
+  { id: 'c2', classId: '1', teacherId: '1', startTime: '2024-03-04T08:00:00', endTime: '2024-03-04T10:00:00', status: 'ended', attendanceList: [] },
+  { id: 'c3', classId: '1', teacherId: '1', startTime: '2024-02-26T08:00:00', endTime: '2024-02-26T10:00:00', status: 'ended', attendanceList: [] },
+  { id: 'c4', classId: '1', teacherId: '1', startTime: '2024-02-19T08:00:00', endTime: '2024-02-19T10:00:00', status: 'ended', attendanceList: [] },
+  { id: 'c5', classId: '1', teacherId: '1', startTime: '2024-02-12T08:00:00', endTime: '2024-02-12T10:00:00', status: 'ended', attendanceList: [] },
+  // Turma 10 - Programação Mobile (teacher 1)
+  { id: 'c6', classId: '10', teacherId: '1', startTime: '2024-03-13T08:00:00', endTime: '2024-03-13T10:00:00', status: 'ended', attendanceList: [] },
+  { id: 'c7', classId: '10', teacherId: '1', startTime: '2024-03-06T08:00:00', endTime: '2024-03-06T10:00:00', status: 'ended', attendanceList: [] },
+  { id: 'c8', classId: '10', teacherId: '1', startTime: '2024-02-28T08:00:00', endTime: '2024-02-28T10:00:00', status: 'ended', attendanceList: [] },
+  // Turma 6 - Programação Mobile (teacher 1)
+  { id: 'c9', classId: '6', teacherId: '1', startTime: '2024-03-14T10:00:00', endTime: '2024-03-14T12:00:00', status: 'ended', attendanceList: [] },
+  { id: 'c10', classId: '6', teacherId: '1', startTime: '2024-03-07T10:00:00', endTime: '2024-03-07T12:00:00', status: 'ended', attendanceList: [] },
 ];
 
 // Pagamentos
@@ -1001,7 +1007,9 @@ export const mockPayments = [
     amount: 450.0,
     dueDate: '2024-03-10',
     status: 'pending',
+    competencia: '03/2024',
     barcode: '12345678901234567890123456789012345678901234',
+    linhaDigitavel: '12345.67890 12345.678901 23456.789012 3 45678901234567',
   },
   {
     id: '2',
@@ -1010,7 +1018,21 @@ export const mockPayments = [
     amount: 450.0,
     dueDate: '2024-02-10',
     status: 'paid',
+    competencia: '02/2024',
     paidAt: '2024-02-08',
+    barcode: '12345678901234567890123456789012345678901234',
+    linhaDigitavel: '12345.67890 12345.678901 23456.789012 3 45678901234567',
+  },
+  {
+    id: '3',
+    studentId: '1',
+    description: 'Mensalidade Abril 2024',
+    amount: 450.0,
+    dueDate: '2024-04-10',
+    status: 'pending',
+    competencia: '04/2024',
+    barcode: '98765432109876543210987654321098765432109876',
+    linhaDigitavel: '98765.43210 98765.432109 87654.321098 7 65432109876543',
   },
 ];
 

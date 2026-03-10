@@ -103,9 +103,36 @@ export const AcademicoScreen = ({ navigation }) => {
                   <Text style={[styles.courseName, { color: theme.text }]}>
                     {course.name}
                   </Text>
+                  <Text style={[styles.situacao, { color: theme.textSecondary }]}>
+                    Situação: Regular
+                  </Text>
                 </View>
               </View>
             )}
+
+            <View style={[styles.atalhos, { backgroundColor: theme.surface }]}>
+              <TouchableOpacity
+                style={[styles.atalho, { borderColor: theme.border }]}
+                onPress={() => navigation.navigate('Presencas')}
+              >
+                <Icon name="checkmark-circle" size={28} color={theme.primary} />
+                <Text style={[styles.atalhoText, { color: theme.text }]}>Frequência</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={[styles.atalho, { borderColor: theme.border }]}
+                onPress={() => navigation.navigate('Presencas')}
+              >
+                <Icon name="ribbon" size={28} color={theme.primary} />
+                <Text style={[styles.atalhoText, { color: theme.text }]}>Notas</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={[styles.atalho, { borderColor: theme.border }]}
+                onPress={() => navigation.navigate('HistoricoAcademico')}
+              >
+                <Icon name="document-text" size={28} color={theme.primary} />
+                <Text style={[styles.atalhoText, { color: theme.text }]}>Histórico</Text>
+              </TouchableOpacity>
+            </View>
 
             <View style={[styles.filter, { backgroundColor: theme.surface }]}>
               <Text style={[styles.label, { color: theme.text }]}>Semestre</Text>
@@ -171,9 +198,14 @@ export const AcademicoScreen = ({ navigation }) => {
                     key={d.subjectId}
                     style={[styles.disciplinaCard, { backgroundColor: theme.surface }]}
                   >
-                    <Text style={[styles.disciplinaName, { color: theme.text }]}>
-                      {d.name}
-                    </Text>
+                    <View style={styles.disciplinaMain}>
+                      <Text style={[styles.disciplinaName, { color: theme.text }]}>
+                        {d.name}
+                      </Text>
+                      <Text style={[styles.disciplinaMeta, { color: theme.textSecondary }]}>
+                        {d.professor} • {d.workload}h
+                      </Text>
+                    </View>
                     <View style={[styles.badge, { backgroundColor: cfg.color }]}>
                       <Text style={styles.badgeText}>{cfg.label}</Text>
                     </View>
@@ -262,6 +294,29 @@ const styles = StyleSheet.create({
   courseName: {
     fontSize: 18,
     fontWeight: '600',
+  },
+  situacao: {
+    fontSize: 12,
+    marginTop: 2,
+  },
+  atalhos: {
+    flexDirection: 'row',
+    padding: spacing.base,
+    borderRadius: 12,
+    marginBottom: spacing.base,
+    gap: spacing.base,
+  },
+  atalho: {
+    flex: 1,
+    alignItems: 'center',
+    padding: spacing.base,
+    borderRadius: 8,
+    borderWidth: 1,
+  },
+  atalhoText: {
+    fontSize: 12,
+    fontWeight: '600',
+    marginTop: spacing.xs,
   },
   filter: {
     flexDirection: 'row',
@@ -356,10 +411,14 @@ const styles = StyleSheet.create({
     borderRadius: 12,
     marginBottom: spacing.sm,
   },
+  disciplinaMain: { flex: 1 },
   disciplinaName: {
     fontSize: 16,
     fontWeight: '500',
-    flex: 1,
+  },
+  disciplinaMeta: {
+    fontSize: 12,
+    marginTop: 2,
   },
   badge: {
     paddingHorizontal: spacing.sm,

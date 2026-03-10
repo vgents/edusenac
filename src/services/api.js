@@ -14,6 +14,7 @@ import {
   mockTeachers,
   mockStudents,
   mockNotifications,
+  mockCalls,
 } from './mockData';
 
 // Inicializar dados na primeira execução
@@ -66,16 +67,38 @@ export const ensureDataInitialized = async () => {
       if (storedNotifications.length < mockNotifications.length) {
         await database.setItem(KEYS.NOTIFICATIONS, mockNotifications);
       }
+      const storedCalls = await database.getItem(KEYS.CALLS) || [];
+      if (storedCalls.length < mockCalls.length) {
+        await database.setItem(KEYS.CALLS, mockCalls);
+      }
     }
     initialized = true;
   }
 };
 
-// Auth
-export const login = async (email, password) => {
+// Auth - aceita email, CPF ou matrícula como identificador
+export const login = async (identity, password) => {
   await ensureDataInitialized();
   const users = await database.getItem(KEYS.USERS) || [];
-  const user = users.find((u) => u.email === email && u.password === password);
+  const students = await database.getItem(KEYS.STUDENTS) || [];
+  const teachers = await database.getItem(KEYS.TEACHERS) || [];
+
+  const normalized = String(identity || '').trim().replace(/\D/g, '');
+  let email = null;
+
+  if (identity.includes('@')) {
+    email = identity.trim();
+  } else if (normalized.length === 11) {
+    const student = students.find((s) => (s.cpf || '').replace(/\D/g, '') === normalized);
+    const teacher = teachers.find((t) => (t.cpf || '').replace(/\D/g, '') === normalized);
+    email = student?.email || teacher?.email;
+  } else {
+    const student = students.find((s) => (s.enrollment || '').replace(/\D/g, '') === normalized);
+    email = student?.email;
+  }
+
+  const loginEmail = email || identity.trim();
+  const user = users.find((u) => u.email === loginEmail && u.password === password);
   if (user) {
     const { password: _, ...userWithoutPassword } = user;
     return userWithoutPassword;
@@ -272,13 +295,15 @@ export const getDisciplinasBySemester = async (studentId, semester) => {
   if (!student?.courseId) return [];
 
   const classes = await getClasses({ semester });
-  const subjectIds = [...new Set(classes.map((c) => c.subjectId))];
-
   const subjects = await database.getItem(KEYS.SUBJECTS) || [];
+  const teachers = await database.getItem(KEYS.TEACHERS) || [];
   const statusList = await database.getItem(KEYS.DISCIPLINA_STATUS) || [];
 
+  const subjectIds = [...new Set(classes.map((c) => c.subjectId))];
   return subjectIds.map((subjectId) => {
     const subject = subjects.find((s) => s.id === subjectId);
+    const cls = classes.find((c) => c.subjectId === subjectId);
+    const teacher = cls ? teachers.find((t) => t.id === cls.teacherId) : null;
     const statusRec = statusList.find(
       (s) => s.subjectId === subjectId && s.semester === semester
     );
@@ -286,6 +311,8 @@ export const getDisciplinasBySemester = async (studentId, semester) => {
       subjectId,
       name: subject?.name || 'Disciplina',
       status: statusRec?.status || 'aprovado',
+      professor: teacher?.name || '-',
+      workload: subject?.workload || 0,
     };
   });
 };
@@ -347,6 +374,11 @@ export const saveAttendanceList = async (classId, date, list) => {
 export const getPaymentsByStudent = async (studentId) => {
   const payments = await database.getItem(KEYS.PAYMENTS) || [];
   return payments.filter((p) => p.studentId === studentId);
+};
+
+export const getPaymentById = async (id) => {
+  const payments = await database.getItem(KEYS.PAYMENTS) || [];
+  return payments.find((p) => p.id === id) || null;
 };
 
 // Documents

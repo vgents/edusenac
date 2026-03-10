@@ -13,10 +13,14 @@ import { useTheme } from '../context/ThemeContext';
 import { StudentHomeScreen } from '../screens/student/StudentHomeScreen';
 import { RegistrarPresencaScreen } from '../screens/student/RegistrarPresencaScreen';
 import { PresencaNaoValidadaScreen } from '../screens/student/PresencaNaoValidadaScreen';
+import { RegrasPresencaScreen } from '../screens/student/RegrasPresencaScreen';
 import { AgendaScreen } from '../screens/student/AgendaScreen';
 import { PresencasScreen } from '../screens/student/PresencasScreen';
 import { AcademicoScreen } from '../screens/student/AcademicoScreen';
+import { HistoricoAcademicoScreen } from '../screens/student/HistoricoAcademicoScreen';
 import { FinanceiroScreen } from '../screens/student/FinanceiroScreen';
+import { BoletoDetalheScreen } from '../screens/student/BoletoDetalheScreen';
+import { HistoricoFinanceiroScreen } from '../screens/student/HistoricoFinanceiroScreen';
 import { DocumentosScreen } from '../screens/student/DocumentosScreen';
 import { IntegracoesScreen } from '../screens/student/IntegracoesScreen';
 import { PerfilScreen } from '../screens/student/PerfilScreen';
@@ -34,8 +38,13 @@ import { TeacherPerfilScreen } from '../screens/teacher/TeacherPerfilScreen';
 
 // Common
 import { ConfiguracoesScreen } from '../screens/common/ConfiguracoesScreen';
+import { TermosScreen } from '../screens/common/TermosScreen';
+import { SobreScreen } from '../screens/common/SobreScreen';
 import { NotificacoesScreen } from '../screens/common/NotificacoesScreen';
 import { BuscaScreen } from '../screens/common/BuscaScreen';
+import { AlterarSenhaScreen } from '../screens/student/AlterarSenhaScreen';
+import { CentralAjudaScreen } from '../screens/student/CentralAjudaScreen';
+import { AvisosScreen } from '../screens/student/AvisosScreen';
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -123,14 +132,23 @@ export const StudentRoutes = () => (
     <Stack.Screen name="Main" component={StudentTabs} />
     <Stack.Screen name="RegistrarPresenca" component={RegistrarPresencaScreen} />
     <Stack.Screen name="PresencaNaoValidada" component={PresencaNaoValidadaScreen} />
+    <Stack.Screen name="RegrasPresenca" component={RegrasPresencaScreen} />
     <Stack.Screen name="Academico" component={AcademicoScreen} />
+    <Stack.Screen name="HistoricoAcademico" component={HistoricoAcademicoScreen} />
     <Stack.Screen name="Documentos" component={DocumentosScreen} />
     <Stack.Screen name="Integracoes" component={IntegracoesScreen} />
+    <Stack.Screen name="BoletoDetalhe" component={BoletoDetalheScreen} />
+    <Stack.Screen name="HistoricoFinanceiro" component={HistoricoFinanceiroScreen} />
     <Stack.Screen name="Perfil" component={PerfilScreen} />
     <Stack.Screen name="ProfessorProfile" component={ProfessorProfileScreen} />
     <Stack.Screen name="Notificacoes" component={NotificacoesScreen} />
     <Stack.Screen name="Busca" component={BuscaScreen} />
     <Stack.Screen name="Configuracoes" component={ConfiguracoesScreen} />
+    <Stack.Screen name="AlterarSenha" component={AlterarSenhaScreen} />
+    <Stack.Screen name="Termos" component={TermosScreen} />
+    <Stack.Screen name="Sobre" component={SobreScreen} />
+    <Stack.Screen name="CentralAjuda" component={CentralAjudaScreen} />
+    <Stack.Screen name="Avisos" component={AvisosScreen} />
   </Stack.Navigator>
 );
 
@@ -203,5 +221,7 @@ export const TeacherRoutes = () => (
     <Stack.Screen name="Notificacoes" component={NotificacoesScreen} />
     <Stack.Screen name="Busca" component={BuscaScreen} />
     <Stack.Screen name="Configuracoes" component={ConfiguracoesScreen} />
+    <Stack.Screen name="Termos" component={TermosScreen} />
+    <Stack.Screen name="Sobre" component={SobreScreen} />
   </Stack.Navigator>
 );

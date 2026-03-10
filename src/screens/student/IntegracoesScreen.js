@@ -10,10 +10,11 @@ import { headerStyles } from '../../styles/headerStyles';
 import { Icon, SafeScreen } from '../../components/ui';
 
 const INTEGRATIONS = [
-  { id: '1', title: 'Sistemas externos', icon: 'link', url: '' },
-  { id: '2', title: 'Biblioteca virtual', icon: 'library', url: '' },
-  { id: '3', title: 'Email institucional', icon: 'mail', url: '' },
-  { id: '4', title: 'Central de ajuda', icon: 'help-circle', url: '' },
+  { id: '1', title: 'Sistemas externos', icon: 'link', screen: null },
+  { id: '2', title: 'Biblioteca virtual', icon: 'library', screen: null },
+  { id: '3', title: 'Email institucional', icon: 'mail', screen: null },
+  { id: '4', title: 'Central de ajuda', icon: 'help-circle', screen: 'CentralAjuda' },
+  { id: '5', title: 'Avisos e comunicados', icon: 'megaphone', screen: 'Avisos' },
 ];
 
 export const IntegracoesScreen = ({ navigation }) => {
@@ -41,7 +42,7 @@ export const IntegracoesScreen = ({ navigation }) => {
         <TouchableOpacity
           key={item.id}
           style={[styles.card, { backgroundColor: theme.surface }]}
-          onPress={() => {}}
+          onPress={() => item.screen && navigation.navigate(item.screen)}
         >
           <Icon name={item.icon} size={28} color={theme.primary} />
           <Text style={[styles.cardTitle, { color: theme.text }]}>

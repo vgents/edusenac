@@ -14,8 +14,10 @@ const ICON_NAME_MAP = {
   library: 'library-outline',
   mail: 'mail-outline',
   'help-circle': 'help-circle-outline',
+  megaphone: 'megaphone-outline',
   time: 'time-outline',
   document: 'document-text-outline',
+  'document-text': 'document-text-outline',
   flask: 'flask-outline',
   filter: 'filter-outline',
 };

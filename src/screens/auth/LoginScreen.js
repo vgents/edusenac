@@ -22,7 +22,7 @@ export const LoginScreen = ({ navigation }) => {
   const handleLogin = async () => {
     setFormError('');
     if (!email.trim()) {
-      setFormError('Digite seu email');
+      setFormError('Digite seu CPF, matrícula ou e-mail');
       return;
     }
     if (!password) {
@@ -59,11 +59,11 @@ export const LoginScreen = ({ navigation }) => {
 
         <View style={styles.form}>
           <Input
-            label="Email"
+            label="CPF, matrícula ou e-mail"
             value={email}
             onChangeText={setEmail}
-            placeholder="seu@email.com"
-            keyboardType="email-address"
+            placeholder="CPF, matrícula ou e-mail"
+            keyboardType="default"
             autoCapitalize="none"
             autoCorrect={false}
           />

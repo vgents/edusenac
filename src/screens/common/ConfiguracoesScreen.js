@@ -120,12 +120,18 @@ export const ConfiguracoesScreen = ({ navigation }) => {
             thumbColor="#FFF"
           />
         </View>
-        <TouchableOpacity style={styles.row}>
+        <TouchableOpacity
+          style={styles.row}
+          onPress={() => navigation.navigate('Termos')}
+        >
           <Icon name="document-text" size={24} color={theme.primary} />
           <Text style={[styles.label, { color: theme.text }]}>Termos de uso</Text>
           <Icon name="chevron-forward" size={24} color={theme.textSecondary} />
         </TouchableOpacity>
-        <TouchableOpacity style={styles.row}>
+        <TouchableOpacity
+          style={styles.row}
+          onPress={() => navigation.navigate('Sobre')}
+        >
           <Icon name="information-circle" size={24} color={theme.primary} />
           <Text style={[styles.label, { color: theme.text }]}>Sobre</Text>
           <Icon name="chevron-forward" size={24} color={theme.textSecondary} />

@@ -31,6 +31,7 @@ export const HistoricoChamadasScreen = ({ route, navigation }) => {
   const { classId } = route.params || {};
   const [calls, setCalls] = useState([]);
   const [callDetails, setCallDetails] = useState({});
+  const [turmaInfo, setTurmaInfo] = useState(null);
 
   useEffect(() => {
     loadCalls();
@@ -40,6 +41,12 @@ export const HistoricoChamadasScreen = ({ route, navigation }) => {
     if (!user?.teacherId) return;
     const c = await getCallsByTeacher(user.teacherId, classId);
     setCalls(c);
+
+    if (classId) {
+      const cl = await getClassById(classId);
+      const subj = cl?.subjectId ? await getSubjectById(cl.subjectId) : null;
+      setTurmaInfo({ room: cl?.room, subjectName: subj?.name });
+    }
 
     const details = {};
     for (const call of c) {
@@ -79,7 +86,9 @@ export const HistoricoChamadasScreen = ({ route, navigation }) => {
         ) : (
           <View style={headerStyles.menuBtn} />
         )}
-        <Text style={[styles.headerTitle, { color: theme.text }]}>Chamadas</Text>
+        <Text style={[styles.headerTitle, { color: theme.text }]}>
+          {classId && turmaInfo?.subjectName ? `Histórico - ${turmaInfo.subjectName}` : 'Chamadas'}
+        </Text>
         <TouchableOpacity style={headerStyles.menuBtn} onPress={openMenu}>
           <Icon name="menu" size={24} color={theme.text} />
         </TouchableOpacity>
@@ -90,7 +99,9 @@ export const HistoricoChamadasScreen = ({ route, navigation }) => {
         contentContainerStyle={[styles.content, !showBack && { paddingTop: spacing.xl }]}
       >
         <Text style={[styles.title, { color: theme.text }]}>
-          Histórico de chamadas
+          {classId && turmaInfo?.subjectName
+            ? `Histórico completo - ${turmaInfo.subjectName}`
+            : 'Histórico de chamadas'}
         </Text>
 
         {calls.length === 0 ? (

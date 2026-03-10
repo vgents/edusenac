@@ -156,7 +156,7 @@ export const PerfilScreen = ({ navigation }) => {
           </TouchableOpacity>
           <TouchableOpacity
             style={[styles.actionItem, { backgroundColor: theme.surface }]}
-            onPress={() => {}}
+            onPress={() => navigation.navigate('AlterarSenha')}
             activeOpacity={0.7}
           >
             <Icon name="lock-closed" size={24} color={theme.primary} />

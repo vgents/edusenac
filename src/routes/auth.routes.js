@@ -9,6 +9,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { useTheme } from '../context/ThemeContext';
 import { Icon } from '../components/ui';
 import { SplashScreen } from '../screens/auth/SplashScreen';
+import { PermissoesScreen } from '../screens/auth/PermissoesScreen';
 import { LoginScreen } from '../screens/auth/LoginScreen';
 import { RecuperarSenhaScreen } from '../screens/auth/RecuperarSenhaScreen';
 
@@ -32,6 +33,11 @@ export const AuthRoutes = () => {
       <Stack.Screen
         name="Splash"
         component={SplashScreen}
+        options={{ gestureEnabled: false }}
+      />
+      <Stack.Screen
+        name="Permissoes"
+        component={PermissoesScreen}
         options={{ gestureEnabled: false }}
       />
       <Stack.Screen name="Login" component={LoginScreen} />

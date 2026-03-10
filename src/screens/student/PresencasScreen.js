@@ -101,6 +101,27 @@ export const PresencasScreen = ({ navigation }) => {
     setDisciplinas(disc);
   };
 
+  const classIdToSubjectName = {};
+  Object.entries(subjects).forEach(([classId, cls]) => {
+    const d = disciplinas.find((x) => x.subjectId === cls.subjectId);
+    classIdToSubjectName[classId] = d?.name || 'Aula';
+  });
+
+  const attendanceWithAula = attendance
+    .map((a) => ({
+      ...a,
+      aulaName: classIdToSubjectName[a.classId] || 'Aula',
+    }))
+    .sort((a, b) => b.date.localeCompare(a.date));
+
+  const chartData = disciplinas.map((d) => {
+    const classIds = Object.keys(subjects).filter((cid) => subjects[cid]?.subjectId === d.subjectId);
+    const recs = attendance.filter((a) => classIds.includes(a.classId));
+    const present = recs.filter((r) => r.status === 'present').length;
+    const pct = recs.length ? Math.round((present / recs.length) * 100) : 0;
+    return { name: d.name, pct };
+  });
+
   const presentCount = attendance.filter((a) => a.status === 'present').length;
   const total = attendance.length;
   const percent = total ? Math.round((presentCount / total) * 100) : 0;
@@ -216,6 +237,64 @@ export const PresencasScreen = ({ navigation }) => {
             />
           </View>
         </View>
+
+        {chartData.length > 0 && (
+          <View style={[styles.graphSection, { backgroundColor: theme.surface }]}>
+            <Text style={[styles.chartTitle, { color: theme.text }]}>Por disciplina</Text>
+            {chartData.map((item) => (
+              <View key={item.name} style={styles.graphRow}>
+                <Text style={[styles.graphLabel, { color: theme.text }]} numberOfLines={1}>
+                  {item.name}
+                </Text>
+                <View style={[styles.graphBarBg, { backgroundColor: theme.border }]}>
+                  <View
+                    style={[
+                      styles.graphBarFill,
+                      { backgroundColor: theme.primary, width: `${item.pct}%` },
+                    ]}
+                  />
+                </View>
+                <Text style={[styles.graphPct, { color: theme.textSecondary }]}>{item.pct}%</Text>
+              </View>
+            ))}
+          </View>
+        )}
+
+        <Text style={[styles.sectionTitle, { color: theme.text }]}>Tabela de presenças</Text>
+        {attendanceWithAula.length === 0 ? (
+          <Text style={[styles.empty, { color: theme.textSecondary }]}>
+            Nenhum registro no semestre
+          </Text>
+        ) : (
+          <View style={[styles.table, { backgroundColor: theme.surface }]}>
+            <View style={[styles.tableHeader, { borderBottomColor: theme.border }]}>
+              <Text style={[styles.tableHeaderText, { color: theme.textSecondary }]}>Aula</Text>
+              <Text style={[styles.tableHeaderText, { color: theme.textSecondary }]}>Data</Text>
+              <Text style={[styles.tableHeaderText, { color: theme.textSecondary }]}>Status</Text>
+            </View>
+            {attendanceWithAula.slice(0, 15).map((a) => (
+              <View key={a.id} style={[styles.tableRow, { borderBottomColor: theme.border }]}>
+                <Text style={[styles.tableCell, { color: theme.text }]} numberOfLines={1}>
+                  {a.aulaName}
+                </Text>
+                <Text style={[styles.tableCell, { color: theme.text }]}>{a.date}</Text>
+                <View
+                  style={[
+                    styles.tableBadge,
+                    {
+                      backgroundColor:
+                        a.status === 'present' ? theme.success : theme.error,
+                    },
+                  ]}
+                >
+                  <Text style={styles.badgeText}>
+                    {a.status === 'present' ? 'Presente' : 'Falta'}
+                  </Text>
+                </View>
+              </View>
+            ))}
+          </View>
+        )}
 
         <Text style={[styles.sectionTitle, { color: theme.text }]}>Disciplinas</Text>
         {disciplinas.length === 0 ? (
@@ -508,6 +587,50 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
   },
   progressFill: { height: '100%', borderRadius: 4 },
+  graphSection: {
+    margin: spacing.base,
+    padding: spacing.base,
+    borderRadius: 12,
+  },
+  graphRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: spacing.sm,
+  },
+  graphLabel: { width: 100, fontSize: 12 },
+  graphBarBg: {
+    flex: 1,
+    height: 8,
+    borderRadius: 4,
+    overflow: 'hidden',
+    marginHorizontal: spacing.sm,
+  },
+  graphBarFill: { height: '100%', borderRadius: 4 },
+  graphPct: { width: 36, fontSize: 12, textAlign: 'right' },
+  table: {
+    marginHorizontal: spacing.base,
+    marginBottom: spacing.base,
+    borderRadius: 12,
+    overflow: 'hidden',
+  },
+  tableHeader: {
+    flexDirection: 'row',
+    padding: spacing.base,
+    borderBottomWidth: 1,
+  },
+  tableHeaderText: { flex: 1, fontSize: 12, fontWeight: '600' },
+  tableRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    padding: spacing.base,
+    borderBottomWidth: 1,
+  },
+  tableCell: { flex: 1, fontSize: 14 },
+  tableBadge: {
+    paddingHorizontal: spacing.sm,
+    paddingVertical: 2,
+    borderRadius: 6,
+  },
   sectionTitle: {
     fontSize: 18,
     fontWeight: '600',

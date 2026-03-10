@@ -119,7 +119,7 @@ export const AulasScreen = ({ navigation }) => {
                   </View>
                   <View style={styles.historicoBtn}>
                     <Text style={[styles.historicoBtnText, { color: theme.primary }]}>
-                      Ver histórico
+                      Histórico
                     </Text>
                     <Icon name="chevron-forward" size={20} color={theme.primary} />
                   </View>

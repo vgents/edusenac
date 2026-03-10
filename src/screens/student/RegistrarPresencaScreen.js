@@ -143,23 +143,32 @@ export const RegistrarPresencaScreen = ({ route, navigation }) => {
 
   const handleConfirm = async () => {
     if (!isWithinRadius()) {
-      navigation.navigate('PresencaNaoValidada', { classId });
+      navigation.navigate('PresencaNaoValidada', {
+        classId,
+        userLocation: location,
+        classLocation: effectiveFaculty,
+      });
       return;
     }
 
     setSubmitting(true);
     showLoading();
     try {
+      const timestamp = new Date().toISOString();
       await addAttendance({
         studentId: user.studentId,
         classId,
-        date: new Date().toISOString().split('T')[0],
+        date: timestamp.split('T')[0],
         status: 'present',
         latitude: location?.latitude,
         longitude: location?.longitude,
       });
       hideLoading();
-      success('Presença registrada com sucesso!');
+      const hora = new Date(timestamp).toLocaleTimeString('pt-BR', {
+        hour: '2-digit',
+        minute: '2-digit',
+      });
+      success(`Presença registrada com sucesso! (${hora})`);
       navigation.goBack();
     } catch (e) {
       hideLoading();

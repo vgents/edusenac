@@ -14,9 +14,19 @@ import Animated, {
 } from 'react-native-reanimated';
 import { spacing } from '../../styles/spacing';
 import { darkBlue } from '../../styles/colors';
+import { storage } from '../../utils/storage';
+
+const PERMISSOES_VISTAS_KEY = '@edusenac_permissoes_vistas';
 
 export const SplashScreen = ({ navigation }) => {
-  const onFinish = () => navigation.replace('Login');
+  const onFinish = async () => {
+    const vistas = await storage.getItem(PERMISSOES_VISTAS_KEY);
+    if (vistas === 'true') {
+      navigation.replace('Login');
+    } else {
+      navigation.replace('Permissoes');
+    }
+  };
   const opacity = useSharedValue(0);
   const scale = useSharedValue(0.8);
 
