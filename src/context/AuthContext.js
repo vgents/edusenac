@@ -43,8 +43,10 @@ export const AuthProvider = ({ children }) => {
   };
 
   const logout = async () => {
+    setLoading(true);
     setUser(null);
     await storage.removeItem(AUTH_STORAGE_KEY);
+    setTimeout(() => setLoading(false), 1500);
   };
 
   const isStudent = user?.type === 'student';

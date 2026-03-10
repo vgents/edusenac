@@ -37,7 +37,7 @@ export const MaisScreen = ({ navigation }) => {
         <TouchableOpacity
           key={item.id}
           style={[styles.card, { backgroundColor: theme.surface }]}
-          onPress={() => {}}
+          onPress={() => navigation.navigate(item.id)}
         >
           <Icon name={item.icon} size={28} color={theme.primary} />
           <View style={styles.cardContent}>

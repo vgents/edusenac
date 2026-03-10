@@ -13,6 +13,7 @@ import {
   mockDisciplinaDetalhes,
   mockTeachers,
   mockStudents,
+  mockNotifications,
 } from './mockData';
 
 // Inicializar dados na primeira execução
@@ -60,6 +61,10 @@ export const ensureDataInitialized = async () => {
           s.id === '1' ? { ...s, photo: mockStudents[0].photo } : s
         );
         await database.setItem(KEYS.STUDENTS, updated);
+      }
+      const storedNotifications = await database.getItem(KEYS.NOTIFICATIONS) || [];
+      if (storedNotifications.length < mockNotifications.length) {
+        await database.setItem(KEYS.NOTIFICATIONS, mockNotifications);
       }
     }
     initialized = true;
@@ -208,6 +213,58 @@ export const getDisciplinaDetalhe = async (subjectId, semester) => {
   return rec || null;
 };
 
+// Progresso geral do curso (aprovados / total) e previsão de conclusão
+export const getAcademicProgress = async (studentId) => {
+  await ensureDataInitialized();
+  const student = await getStudent(studentId);
+  if (!student?.courseId) return { approved: 0, total: 0, percent: 0, previsao: null };
+
+  const subjects = await getSubjects(student.courseId);
+  const total = subjects.length;
+  if (total === 0) return { approved: 0, total: 0, percent: 0, previsao: null };
+
+  const statusList = await database.getItem(KEYS.DISCIPLINA_STATUS) || [];
+  const semesterValue = (sem) => {
+    const [y, s] = sem.split('.').map(Number);
+    return (y || 0) * 10 + (s || 0);
+  };
+  const semesterOrderDesc = (a, b) => semesterValue(b) - semesterValue(a);
+
+  let approved = 0;
+  for (const s of subjects) {
+    const recs = statusList.filter((r) => r.subjectId === s.id).sort((a, b) => semesterOrderDesc(a.semester, b.semester));
+    const latest = recs[0];
+    if (latest?.status === 'aprovado') approved++;
+  }
+
+  const percent = Math.round((approved / total) * 100);
+  const remaining = total - approved;
+
+  let previsao = null;
+  if (remaining > 0) {
+    const classes = await getClasses({});
+    const semesters = [...new Set(classes.map((c) => c.semester))].sort((a, b) => semesterValue(a) - semesterValue(b));
+    const avgPerSemester = semesters.length ? Math.max(1, Math.round(subjects.length / semesters.length)) : 2;
+    const semestersLeft = Math.ceil(remaining / avgPerSemester);
+    const lastSem = semesters[semesters.length - 1] || '2024.1';
+    const [y, s] = lastSem.split('.').map(Number);
+    let ny = y;
+    let ns = s;
+    for (let i = 0; i < semestersLeft; i++) {
+      ns++;
+      if (ns > 2) {
+        ns = 1;
+        ny++;
+      }
+    }
+    previsao = `${ns}º semestre de ${ny}`;
+  } else {
+    previsao = 'Concluído';
+  }
+
+  return { approved, total, percent, previsao };
+};
+
 // Disciplinas do semestre com status (aprovado, reprovado, recuperação)
 export const getDisciplinasBySemester = async (studentId, semester) => {
   await ensureDataInitialized();
@@ -296,6 +353,20 @@ export const getPaymentsByStudent = async (studentId) => {
 export const getDocumentsByStudent = async (studentId) => {
   const documents = await database.getItem(KEYS.DOCUMENTS) || [];
   return documents.filter((d) => d.studentId === studentId);
+};
+
+// Notifications (por userId - user.id)
+export const getNotifications = async (userId) => {
+  await ensureDataInitialized();
+  const list = await database.getItem(KEYS.NOTIFICATIONS) || [];
+  return list
+    .filter((n) => n.userId === String(userId))
+    .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+};
+
+export const hasUnreadNotifications = async (userId) => {
+  const list = await getNotifications(userId);
+  return list.some((n) => !n.read);
 };
 
 // Calls

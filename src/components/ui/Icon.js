@@ -17,6 +17,7 @@ const ICON_NAME_MAP = {
   time: 'time-outline',
   document: 'document-text-outline',
   flask: 'flask-outline',
+  filter: 'filter-outline',
 };
 
 export const Icon = ({ name, size = 24, color = '#000', style }) => {

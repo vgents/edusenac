@@ -1021,7 +1021,7 @@ export const mockDocuments = [
   { id: '3', type: 'report', name: 'Boletim 2024.1', url: null, studentId: '1' },
 ];
 
-// Notificações
+// Notificações (userId '1' = aluno, '2' = professor)
 export const mockNotifications = [
   {
     id: '1',
@@ -1030,6 +1030,30 @@ export const mockNotifications = [
     message: 'Aula de Programação Mobile às 08:00',
     read: false,
     createdAt: new Date().toISOString(),
+  },
+  {
+    id: '2',
+    userId: '1',
+    title: 'Presença registrada',
+    message: 'Sua presença na aula de Banco de Dados foi confirmada.',
+    read: true,
+    createdAt: new Date(Date.now() - 86400000).toISOString(),
+  },
+  {
+    id: '3',
+    userId: '2',
+    title: 'Chamada iniciada',
+    message: 'A turma de Programação Mobile está aguardando a chamada.',
+    read: false,
+    createdAt: new Date().toISOString(),
+  },
+  {
+    id: '4',
+    userId: '2',
+    title: 'Nova turma atribuída',
+    message: 'Você foi designado para a turma de Desenvolvimento Web - 2024.1',
+    read: true,
+    createdAt: new Date(Date.now() - 172800000).toISOString(),
   },
 ];
 

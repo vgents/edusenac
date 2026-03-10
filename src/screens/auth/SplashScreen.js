@@ -1,5 +1,6 @@
 /**
  * Splash Screen - Tela inicial
+ * Layout: fundo branco, logo SenacMG centralizado, "Aplicativo Acadêmico" abaixo
  */
 
 import React, { useEffect } from 'react';
@@ -11,12 +12,11 @@ import Animated, {
   withTiming,
   withSequence,
 } from 'react-native-reanimated';
-import { useTheme } from '../../context/ThemeContext';
 import { spacing } from '../../styles/spacing';
+import { darkBlue } from '../../styles/colors';
 
 export const SplashScreen = ({ navigation }) => {
   const onFinish = () => navigation.replace('Login');
-  const { theme } = useTheme();
   const opacity = useSharedValue(0);
   const scale = useSharedValue(0.8);
 
@@ -38,16 +38,14 @@ export const SplashScreen = ({ navigation }) => {
   }));
 
   return (
-    <SafeScreen style={[styles.container, { backgroundColor: theme.background }]}>
+    <SafeScreen style={styles.container}>
       <Animated.View style={[styles.content, animatedContainer]}>
         <Image
-          source={require('../../../assets/senac_logo.png')}
+          source={require('../../../assets/senacmg.png')}
           style={styles.logo}
           resizeMode="contain"
         />
-        <Text style={[styles.subtitle, { color: theme.textSecondary }]}>
-          Aplicativo Acadêmico
-        </Text>
+        <Text style={styles.subtitle}>Aplicativo Acadêmico</Text>
       </Animated.View>
     </SafeScreen>
   );
@@ -56,6 +54,7 @@ export const SplashScreen = ({ navigation }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: '#FFFFFF',
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -63,11 +62,13 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   logo: {
-    width: 200,
-    height: 120,
-    marginBottom: spacing.base,
+    width: 220,
+    height: 100,
+    marginBottom: spacing.lg,
   },
   subtitle: {
-    fontSize: 16,
+    fontSize: 15,
+    color: darkBlue[600],
+    fontWeight: '400',
   },
 });

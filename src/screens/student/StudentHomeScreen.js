@@ -28,6 +28,7 @@ import {
   getSubjectById,
   getTeachersForStudent,
   getAulas,
+  hasUnreadNotifications,
 } from '../../services/api';
 import { spacing } from '../../styles/spacing';
 import { headerStyles } from '../../styles/headerStyles';
@@ -102,10 +103,16 @@ export const StudentHomeScreen = ({ navigation }) => {
   const [selectedAula, setSelectedAula] = useState(null);
   const [courseName, setCourseName] = useState('');
   const [teacherSubjects, setTeacherSubjects] = useState({});
+  const [hasUnread, setHasUnread] = useState(false);
 
   useEffect(() => {
     loadData();
   }, [user]);
+
+  useEffect(() => {
+    if (!user?.id) return;
+    hasUnreadNotifications(user.id).then(setHasUnread);
+  }, [user?.id]);
 
   const loadData = async () => {
     if (!user?.studentId) return;
@@ -202,11 +209,21 @@ export const StudentHomeScreen = ({ navigation }) => {
           </View>
         </View>
         <View style={styles.headerIcons}>
-          <TouchableOpacity style={headerStyles.iconButton} onPress={() => {}}>
-            <Icon name="notifications-outline" size={24} color={theme.text} />
-          </TouchableOpacity>
-          <TouchableOpacity style={headerStyles.iconButton} onPress={() => {}}>
-            <Icon name="search" size={24} color={theme.text} />
+          <TouchableOpacity
+            style={headerStyles.iconButton}
+            onPress={() => navigation.navigate('Notificacoes')}
+          >
+            <View>
+              <Icon name="notifications-outline" size={24} color={theme.text} />
+              {hasUnread && (
+                <View
+                  style={[
+                    styles.notifDot,
+                    { backgroundColor: theme.success, borderColor: theme.background },
+                  ]}
+                />
+              )}
+            </View>
           </TouchableOpacity>
           <TouchableOpacity style={headerStyles.menuBtn} onPress={openMenu}>
             <Icon name="menu" size={24} color={theme.text} />
@@ -265,6 +282,18 @@ export const StudentHomeScreen = ({ navigation }) => {
             <Icon name="school" size={64} color="rgba(255,255,255,0.4)" />
           </View>
         </View>
+
+        {/* Barra de pesquisa */}
+        <TouchableOpacity
+          style={[styles.searchBar, { backgroundColor: theme.surface, borderColor: theme.border }]}
+          onPress={() => navigation.navigate('Busca')}
+          activeOpacity={0.7}
+        >
+          <Icon name="search" size={20} color={theme.textSecondary} />
+          <Text style={[styles.searchPlaceholder, { color: theme.textSecondary }]}>
+            Buscar disciplinas, aulas...
+          </Text>
+        </TouchableOpacity>
 
         {/* Categorias */}
         <ScrollView
@@ -633,8 +662,32 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     gap: spacing.sm,
   },
+  notifDot: {
+    position: 'absolute',
+    top: 0,
+    right: 0,
+    width: 10,
+    height: 10,
+    borderRadius: 5,
+    borderWidth: 2,
+  },
+  searchBar: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginHorizontal: spacing.lg,
+    marginBottom: spacing.base,
+    paddingHorizontal: spacing.base,
+    paddingVertical: spacing.sm,
+    borderRadius: 12,
+    borderWidth: 1,
+    gap: spacing.sm,
+  },
+  searchPlaceholder: {
+    fontSize: 16,
+  },
   banner: {
     marginHorizontal: spacing.lg,
+    marginTop: spacing.lg,
     marginBottom: spacing.xl,
     borderRadius: 16,
     padding: spacing.lg,

@@ -20,6 +20,7 @@ import {
   getClasses,
   getSubjectById,
   getCallsByTeacher,
+  hasUnreadNotifications,
 } from '../../services/api';
 import { Button, SafeScreen, Icon } from '../../components/ui';
 import { spacing } from '../../styles/spacing';
@@ -35,10 +36,16 @@ export const TeacherHomeScreen = ({ navigation }) => {
   const [subjectNames, setSubjectNames] = useState({});
   const [aulasDoDia, setAulasDoDia] = useState(0);
   const [chamadasPendentes, setChamadasPendentes] = useState(0);
+  const [hasUnread, setHasUnread] = useState(false);
 
   useEffect(() => {
     loadData();
   }, [user]);
+
+  useEffect(() => {
+    if (!user?.id) return;
+    hasUnreadNotifications(user.id).then(setHasUnread);
+  }, [user?.id]);
 
   const loadData = async () => {
     if (!user?.teacherId) return;
@@ -116,8 +123,21 @@ export const TeacherHomeScreen = ({ navigation }) => {
           </View>
         </View>
         <View style={styles.headerIcons}>
-          <TouchableOpacity style={headerStyles.iconButton} onPress={() => {}}>
-            <Icon name="notifications-outline" size={24} color={theme.text} />
+          <TouchableOpacity
+            style={headerStyles.iconButton}
+            onPress={() => navigation.navigate('Notificacoes')}
+          >
+            <View>
+              <Icon name="notifications-outline" size={24} color={theme.text} />
+              {hasUnread && (
+                <View
+                  style={[
+                    styles.notifDot,
+                    { backgroundColor: theme.success, borderColor: theme.background },
+                  ]}
+                />
+              )}
+            </View>
           </TouchableOpacity>
           <TouchableOpacity style={headerStyles.menuBtn} onPress={openMenu}>
             <Icon name="menu" size={24} color={theme.text} />
@@ -129,6 +149,18 @@ export const TeacherHomeScreen = ({ navigation }) => {
         style={[styles.container, { backgroundColor: theme.background }]}
         showsVerticalScrollIndicator={false}
       >
+        {/* Barra de pesquisa */}
+        <TouchableOpacity
+          style={[styles.searchBar, { backgroundColor: theme.surface, borderColor: theme.border }]}
+          onPress={() => navigation.navigate('Busca')}
+          activeOpacity={0.7}
+        >
+          <Icon name="search" size={20} color={theme.textSecondary} />
+          <Text style={[styles.searchPlaceholder, { color: theme.textSecondary }]}>
+            Buscar aulas, turmas...
+          </Text>
+        </TouchableOpacity>
+
         {/* Indicadores rápidos */}
         <Animated.View
           entering={FadeInDown.duration(400).delay(80)}
@@ -254,6 +286,29 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     gap: spacing.sm,
+  },
+  notifDot: {
+    position: 'absolute',
+    top: 0,
+    right: 0,
+    width: 10,
+    height: 10,
+    borderRadius: 5,
+    borderWidth: 2,
+  },
+  searchBar: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginHorizontal: spacing.lg,
+    marginBottom: spacing.base,
+    paddingHorizontal: spacing.base,
+    paddingVertical: spacing.sm,
+    borderRadius: 12,
+    borderWidth: 1,
+    gap: spacing.sm,
+  },
+  searchPlaceholder: {
+    fontSize: 16,
   },
   greeting: { fontSize: 14 },
   name: { fontSize: 22, fontWeight: '700' },

@@ -34,6 +34,8 @@ import { TeacherPerfilScreen } from '../screens/teacher/TeacherPerfilScreen';
 
 // Common
 import { ConfiguracoesScreen } from '../screens/common/ConfiguracoesScreen';
+import { NotificacoesScreen } from '../screens/common/NotificacoesScreen';
+import { BuscaScreen } from '../screens/common/BuscaScreen';
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -126,6 +128,8 @@ export const StudentRoutes = () => (
     <Stack.Screen name="Integracoes" component={IntegracoesScreen} />
     <Stack.Screen name="Perfil" component={PerfilScreen} />
     <Stack.Screen name="ProfessorProfile" component={ProfessorProfileScreen} />
+    <Stack.Screen name="Notificacoes" component={NotificacoesScreen} />
+    <Stack.Screen name="Busca" component={BuscaScreen} />
     <Stack.Screen name="Configuracoes" component={ConfiguracoesScreen} />
   </Stack.Navigator>
 );
@@ -196,6 +200,8 @@ export const TeacherRoutes = () => (
     <Stack.Screen name="AcompanhamentoChamada" component={AcompanhamentoChamadaScreen} />
     <Stack.Screen name="HistoricoChamadas" component={HistoricoChamadasScreen} />
     <Stack.Screen name="ListaPresenca" component={ListaPresencaScreen} />
+    <Stack.Screen name="Notificacoes" component={NotificacoesScreen} />
+    <Stack.Screen name="Busca" component={BuscaScreen} />
     <Stack.Screen name="Configuracoes" component={ConfiguracoesScreen} />
   </Stack.Navigator>
 );

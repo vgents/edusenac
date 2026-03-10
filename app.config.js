@@ -14,7 +14,7 @@ export default {
     icon: './assets/icon.png',
     userInterfaceStyle: 'light',
     splash: {
-      image: './assets/senac_logo.png',
+      image: './assets/senacmg.png',
       resizeMode: 'contain',
       backgroundColor: '#ffffff',
     },
@@ -22,9 +22,9 @@ export default {
       [
         'expo-splash-screen',
         {
-          image: './assets/senac_logo.png',
+          image: './assets/senacmg.png',
           backgroundColor: '#ffffff',
-          imageWidth: 200,
+          imageWidth: 220,
           resizeMode: 'contain',
         },
       ],
