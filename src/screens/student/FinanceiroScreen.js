@@ -76,17 +76,17 @@ export const FinanceiroScreen = ({ navigation }) => {
             },
           ]}
         >
-          <Text style={styles.summaryLabel}>Total em aberto</Text>
-          <Text style={styles.summaryValue}>
+          <Text style={[styles.summaryLabel, { color: theme.primaryText }]}>Total em aberto</Text>
+          <Text style={[styles.summaryValue, { color: theme.primaryText }]}>
             R$ {totalPending.toFixed(2).replace('.', ',')}
           </Text>
           {proximoVenc && (
-            <Text style={styles.summarySublabel}>
+            <Text style={[styles.summarySublabel, { color: theme.primaryText }]}>
               Próximo vencimento: {proximoVenc.dueDate} - R$ {proximoVenc.amount.toFixed(2).replace('.', ',')}
             </Text>
           )}
           {ultimoPago && (
-            <Text style={styles.summarySublabel}>
+            <Text style={[styles.summarySublabel, { color: theme.primaryText }]}>
               Último pagamento: {ultimoPago.paidAt || ultimoPago.dueDate}
             </Text>
           )}
@@ -151,7 +151,7 @@ export const FinanceiroScreen = ({ navigation }) => {
                     },
                   ]}
                 >
-                  <Text style={styles.badgeText}>
+                  <Text style={[styles.badgeText, { color: theme.primaryText }]}>
                     {p.status === 'paid' ? 'Pago' : p.dueDate < hoje ? 'Vencido' : 'Pendente'}
                   </Text>
                 </View>
@@ -170,7 +170,7 @@ export const FinanceiroScreen = ({ navigation }) => {
                   ]}
                   onPress={() => navigation.navigate('BoletoDetalhe', { paymentId: p.id })}
                 >
-                  <Text style={styles.buttonText}>Ver boleto</Text>
+                  <Text style={[styles.buttonText, { color: theme.primaryText }]}>Ver boleto</Text>
                 </TouchableOpacity>
               )}
             </View>

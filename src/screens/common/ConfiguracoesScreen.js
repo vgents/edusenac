@@ -45,7 +45,7 @@ export const ConfiguracoesScreen = ({ navigation }) => {
             value={isDarkMode}
             onValueChange={toggleTheme}
             trackColor={{ false: theme.border, true: theme.primary }}
-            thumbColor="#FFF"
+            thumbColor={theme.primaryText}
           />
         </View>
         <View style={styles.row}>
@@ -55,7 +55,7 @@ export const ConfiguracoesScreen = ({ navigation }) => {
             value={highContrast}
             onValueChange={setHighContrast}
             trackColor={{ false: theme.border, true: theme.primary }}
-            thumbColor="#FFF"
+            thumbColor={theme.primaryText}
           />
         </View>
         <View style={styles.row}>
@@ -75,7 +75,7 @@ export const ConfiguracoesScreen = ({ navigation }) => {
                 <Text
                   style={[
                     styles.fontBtnText,
-                    { color: fontSizeScale === s ? '#FFF' : theme.text },
+                    { color: fontSizeScale === s ? theme.primaryText : theme.text },
                   ]}
                 >
                   {s === 'normal' ? 'N' : s === 'large' ? 'L' : 'XL'}
@@ -91,7 +91,7 @@ export const ConfiguracoesScreen = ({ navigation }) => {
             value={screenReaderEnabled}
             onValueChange={setScreenReaderEnabled}
             trackColor={{ false: theme.border, true: theme.primary }}
-            thumbColor="#FFF"
+            thumbColor={theme.primaryText}
           />
         </View>
       </View>
@@ -107,7 +107,7 @@ export const ConfiguracoesScreen = ({ navigation }) => {
             value={notifications}
             onValueChange={setNotifications}
             trackColor={{ false: theme.border, true: theme.primary }}
-            thumbColor="#FFF"
+            thumbColor={theme.primaryText}
           />
         </View>
         <View style={styles.row}>
@@ -117,7 +117,7 @@ export const ConfiguracoesScreen = ({ navigation }) => {
             value={locationEnabled}
             onValueChange={setLocationEnabled}
             trackColor={{ false: theme.border, true: theme.primary }}
-            thumbColor="#FFF"
+            thumbColor={theme.primaryText}
           />
         </View>
         <TouchableOpacity

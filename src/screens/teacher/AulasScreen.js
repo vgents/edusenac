@@ -19,6 +19,7 @@ import { useMenu } from '../../context/MenuContext';
 import { getClasses, getSubjectById } from '../../services/api';
 import { spacing } from '../../styles/spacing';
 import { headerStyles } from '../../styles/headerStyles';
+import { getSubjectIcon } from '../../utils/subjectIcons';
 import { Icon, SafeScreen } from '../../components/ui';
 
 const SEMESTER_OPTIONS = ['2023.2', '2024.1', '2024.2'];
@@ -108,7 +109,7 @@ export const AulasScreen = ({ navigation }) => {
                 }
               >
                 <View style={[styles.card, { backgroundColor: theme.surface }]}>
-                  <Icon name="people" size={32} color={theme.primary} />
+                  <Icon name={getSubjectIcon(subjectNames[c.subjectId] || '')} size={32} color={theme.primary} />
                   <View style={styles.cardContent}>
                     <Text style={[styles.cardTitle, { color: theme.text }]}>
                       {subjectNames[c.subjectId] || 'Disciplina'}
@@ -182,7 +183,7 @@ export const AulasScreen = ({ navigation }) => {
 
 const styles = StyleSheet.create({
   headerTitle: { fontSize: 20, fontWeight: '700' },
-  container: { flex: 1, padding: spacing.base },
+  container: { flex: 1, paddingHorizontal: spacing.lg, paddingVertical: spacing.base },
   filter: { marginBottom: spacing.base, borderRadius: 12, overflow: 'hidden' },
   filterCard: {
     flexDirection: 'row',
@@ -194,7 +195,7 @@ const styles = StyleSheet.create({
   semester: { fontSize: 18, fontWeight: '700', marginTop: 2 },
   sectionTitle: {
     fontSize: 18,
-    fontWeight: '600',
+    fontWeight: '700',
     marginBottom: spacing.base,
   },
   card: {
@@ -214,8 +215,9 @@ const styles = StyleSheet.create({
   },
   historicoBtnText: { fontSize: 14, fontWeight: '600' },
   emptyCard: {
-    padding: spacing.xxl,
+    padding: spacing.xl,
     alignItems: 'center',
+    borderRadius: 12,
   },
   empty: { marginTop: spacing.base, fontStyle: 'italic' },
   modalOverlay: {

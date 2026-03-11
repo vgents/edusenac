@@ -1,16 +1,18 @@
 /**
- * ThemeContext - Gerenciamento de tema (claro/escuro)
+ * ThemeContext - Gerenciamento de tema (claro/escuro) e alto contraste
  */
 
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { storage } from '../utils/storage';
-import { lightTheme, darkTheme } from '../styles/colors';
+import { lightTheme, darkTheme, highContrastTheme } from '../styles/colors';
+import { useAccessibility } from './AccessibilityContext';
 
 const THEME_STORAGE_KEY = '@edusenac_theme';
 
 const ThemeContext = createContext({});
 
 export const ThemeProvider = ({ children }) => {
+  const { highContrast } = useAccessibility();
   const [isDarkMode, setIsDarkMode] = useState(false);
 
   useEffect(() => {
@@ -34,7 +36,8 @@ export const ThemeProvider = ({ children }) => {
 
   const toggleTheme = () => setIsDarkMode((prev) => !prev);
 
-  const theme = isDarkMode ? darkTheme : lightTheme;
+  const baseTheme = isDarkMode ? darkTheme : lightTheme;
+  const theme = highContrast ? highContrastTheme : baseTheme;
 
   return (
     <ThemeContext.Provider
@@ -42,6 +45,7 @@ export const ThemeProvider = ({ children }) => {
         theme,
         isDarkMode,
         toggleTheme,
+        highContrast,
       }}
     >
       {children}

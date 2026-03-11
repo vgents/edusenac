@@ -27,7 +27,7 @@ const { width } = Dimensions.get('window');
 
 export const PerfilScreen = ({ navigation }) => {
   const insets = useSafeAreaInsets();
-  const { theme, isDarkMode } = useTheme();
+  const { theme, isDarkMode, highContrast } = useTheme();
   const { user } = useAuth();
   const { openMenu } = useMenu();
   const [student, setStudent] = useState(null);
@@ -45,9 +45,11 @@ export const PerfilScreen = ({ navigation }) => {
     }
   }, [user]);
 
-  const gradientColors = isDarkMode
-    ? [theme.primary, darkBlue[800]]
-    : [theme.primary, blue[600]];
+  const gradientColors = highContrast
+    ? [theme.primary, theme.primary]
+    : isDarkMode
+      ? [theme.primary, darkBlue[800]]
+      : [theme.primary, blue[600]];
 
   return (
     <SafeScreen edges={['top']}>
@@ -63,14 +65,14 @@ export const PerfilScreen = ({ navigation }) => {
           style={[headerStyles.iconButton, styles.iconBtnLight]}
           activeOpacity={0.7}
         >
-          <Icon name="arrow-back" size={24} color="#FFF" />
+          <Icon name="arrow-back" size={24} color={theme.primaryText} />
         </TouchableOpacity>
-        <Text style={styles.topBarTitle}>Perfil</Text>
+        <Text style={[styles.topBarTitle, { color: theme.primaryText }]}>Perfil</Text>
         <TouchableOpacity
           style={[headerStyles.menuBtn, styles.iconBtnLight]}
           onPress={openMenu}
         >
-          <Icon name="menu" size={24} color="#FFF" />
+          <Icon name="menu" size={24} color={theme.primaryText} />
         </TouchableOpacity>
       </View>
 
@@ -92,13 +94,13 @@ export const PerfilScreen = ({ navigation }) => {
                 {student?.photo ? (
                   <Image source={{ uri: student.photo }} style={styles.avatarImage} />
                 ) : (
-                  <Icon name="person" size={56} color="#FFF" />
+                  <Icon name="person" size={56} color={theme.primaryText} />
                 )}
               </View>
             </View>
-            <Text style={styles.name}>{student?.name || 'Aluno'}</Text>
+            <Text style={[styles.name, { color: theme.primaryText }]}>{student?.name || 'Aluno'}</Text>
             <View style={styles.badge}>
-              <Text style={styles.badgeText}>Aluno</Text>
+              <Text style={[styles.badgeText, { color: theme.primaryText }]}>Aluno</Text>
             </View>
           </View>
         </LinearGradient>
@@ -145,15 +147,6 @@ export const PerfilScreen = ({ navigation }) => {
         {/* Ações */}
         <View style={styles.actionsSection}>
           <Text style={[styles.sectionTitle, { color: theme.textSecondary }]}>Conta</Text>
-          <TouchableOpacity
-            style={[styles.actionItem, { backgroundColor: theme.surface }]}
-            onPress={() => navigation.navigate('Configuracoes')}
-            activeOpacity={0.7}
-          >
-            <Icon name="settings-outline" size={24} color={theme.primary} />
-            <Text style={[styles.actionText, { color: theme.text }]}>Configurações</Text>
-            <Icon name="chevron-forward" size={20} color={theme.textSecondary} />
-          </TouchableOpacity>
           <TouchableOpacity
             style={[styles.actionItem, { backgroundColor: theme.surface }]}
             onPress={() => navigation.navigate('AlterarSenha')}

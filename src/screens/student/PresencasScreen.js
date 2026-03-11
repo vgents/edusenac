@@ -12,7 +12,9 @@ import {
   Modal,
   Pressable,
   Dimensions,
+  Platform,
 } from 'react-native';
+import { BlurView } from 'expo-blur';
 import Animated, {
   useSharedValue,
   useAnimatedStyle,
@@ -33,6 +35,7 @@ import {
 } from '../../services/api';
 import { spacing } from '../../styles/spacing';
 import { headerStyles } from '../../styles/headerStyles';
+import { getSubjectIcon } from '../../utils/subjectIcons';
 import { Icon, SafeScreen, Button } from '../../components/ui';
 
 const { width } = Dimensions.get('window');
@@ -53,7 +56,7 @@ function getAulaStatus(aula) {
 }
 
 export const PresencasScreen = ({ navigation }) => {
-  const { theme } = useTheme();
+  const { theme, isDarkMode } = useTheme();
   const insets = useSafeAreaInsets();
   const { user } = useAuth();
   const { openMenu } = useMenu();
@@ -243,6 +246,7 @@ export const PresencasScreen = ({ navigation }) => {
             <Text style={[styles.chartTitle, { color: theme.text }]}>Por disciplina</Text>
             {chartData.map((item) => (
               <View key={item.name} style={styles.graphRow}>
+                <Icon name={getSubjectIcon(item.name)} size={20} color={theme.primary} style={styles.graphIcon} />
                 <Text style={[styles.graphLabel, { color: theme.text }]} numberOfLines={1}>
                   {item.name}
                 </Text>
@@ -274,9 +278,12 @@ export const PresencasScreen = ({ navigation }) => {
             </View>
             {attendanceWithAula.slice(0, 15).map((a) => (
               <View key={a.id} style={[styles.tableRow, { borderBottomColor: theme.border }]}>
-                <Text style={[styles.tableCell, { color: theme.text }]} numberOfLines={1}>
-                  {a.aulaName}
-                </Text>
+                <View style={styles.tableCellAula}>
+                  <Icon name={getSubjectIcon(a.aulaName)} size={18} color={theme.primary} style={styles.tableCellIcon} />
+                  <Text style={[styles.tableCell, styles.tableCellAulaText, { color: theme.text }]} numberOfLines={1}>
+                    {a.aulaName}
+                  </Text>
+                </View>
                 <Text style={[styles.tableCell, { color: theme.text }]}>{a.date}</Text>
                 <View
                   style={[
@@ -287,7 +294,7 @@ export const PresencasScreen = ({ navigation }) => {
                     },
                   ]}
                 >
-                  <Text style={styles.badgeText}>
+                  <Text style={[styles.badgeText, { color: theme.primaryText }]}>
                     {a.status === 'present' ? 'Presente' : 'Falta'}
                   </Text>
                 </View>
@@ -316,13 +323,16 @@ export const PresencasScreen = ({ navigation }) => {
                 onPress={() => handleSelectDisciplina(d)}
                 activeOpacity={0.7}
               >
-                <View style={styles.cardHeader}>
+                <View style={styles.cardRow}>
+                  <Icon name={getSubjectIcon(d.name)} size={28} color={theme.primary} style={styles.disciplinaIcon} />
+                  <View style={styles.cardHeader}>
                   <Text style={[styles.subjectName, { color: theme.text }]}>
                     {d.name}
                   </Text>
                   <View style={[styles.badge, { backgroundColor: cfg.color }]}>
-                    <Text style={styles.badgeText}>{cfg.label}</Text>
+                    <Text style={[styles.badgeText, { color: theme.primaryText }]}>{cfg.label}</Text>
                   </View>
+                </View>
                 </View>
               </TouchableOpacity>
             );
@@ -385,12 +395,32 @@ export const PresencasScreen = ({ navigation }) => {
         <View style={styles.modalContainer}>
           <Pressable style={StyleSheet.absoluteFill} onPress={closeDrawer}>
             <Animated.View
-              style={[
-                styles.overlay,
-                overlayAnimatedStyle,
-                { backgroundColor: 'rgba(0,0,0,0.4)' },
-              ]}
-            />
+              style={[styles.overlay, overlayAnimatedStyle]}
+              pointerEvents="box-none"
+            >
+              {Platform.OS === 'web' ? (
+                <View style={styles.blurFallback} />
+              ) : (
+                <View style={StyleSheet.absoluteFill}>
+                  <BlurView
+                    intensity={120}
+                    tint={isDarkMode ? 'dark' : 'light'}
+                    style={StyleSheet.absoluteFill}
+                    experimentalBlurMethod="dimezisBlurView"
+                  />
+                  <View
+                    style={[
+                      StyleSheet.absoluteFill,
+                      {
+                        backgroundColor: isDarkMode
+                          ? 'rgba(10,22,40,0.15)'
+                          : 'rgba(255,255,255,0.08)',
+                      },
+                    ]}
+                  />
+                </View>
+              )}
+            </Animated.View>
           </Pressable>
           <Animated.View
             style={[
@@ -406,6 +436,7 @@ export const PresencasScreen = ({ navigation }) => {
             {selectedDisciplina && (
               <>
                 <View style={[styles.drawerHeader, { borderBottomColor: theme.border }]}>
+                  <Icon name={getSubjectIcon(selectedDisciplina.name)} size={28} color={theme.primary} style={styles.drawerTitleIcon} />
                   <Text style={[styles.drawerTitle, { color: theme.text }]}>
                     {selectedDisciplina.name}
                   </Text>
@@ -440,7 +471,7 @@ export const PresencasScreen = ({ navigation }) => {
                             },
                           ]}
                         >
-                          <Text style={styles.badgeText}>
+                          <Text style={[styles.badgeText, { color: theme.primaryText }]}>
                             {selectedDisciplina.status === 'aprovado'
                               ? 'Aprovado'
                               : selectedDisciplina.status === 'reprovado'
@@ -597,7 +628,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginBottom: spacing.sm,
   },
-  graphLabel: { width: 100, fontSize: 12 },
+  graphIcon: { marginRight: spacing.sm },
+  graphLabel: { width: 90, fontSize: 12 },
   graphBarBg: {
     flex: 1,
     height: 8,
@@ -625,6 +657,9 @@ const styles = StyleSheet.create({
     padding: spacing.base,
     borderBottomWidth: 1,
   },
+  tableCellAula: { flex: 1, flexDirection: 'row', alignItems: 'center', minWidth: 0 },
+  tableCellAulaText: { flex: 1 },
+  tableCellIcon: { marginRight: spacing.sm },
   tableCell: { flex: 1, fontSize: 14 },
   tableBadge: {
     paddingHorizontal: spacing.sm,
@@ -642,7 +677,10 @@ const styles = StyleSheet.create({
     padding: spacing.base,
     borderRadius: 12,
   },
+  cardRow: { flexDirection: 'row', alignItems: 'center' },
+  disciplinaIcon: { marginRight: spacing.base },
   cardHeader: {
+    flex: 1,
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
@@ -687,6 +725,11 @@ const styles = StyleSheet.create({
   },
   overlay: {
     ...StyleSheet.absoluteFillObject,
+    overflow: 'hidden',
+  },
+  blurFallback: {
+    ...StyleSheet.absoluteFillObject,
+    backgroundColor: 'rgba(0,0,0,0.4)',
   },
   drawer: {
     width: DRAWER_WIDTH,
@@ -704,6 +747,7 @@ const styles = StyleSheet.create({
     padding: spacing.base,
     borderBottomWidth: 1,
   },
+  drawerTitleIcon: { marginRight: spacing.sm },
   drawerTitle: {
     fontSize: 18,
     fontWeight: '600',

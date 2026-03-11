@@ -22,6 +22,7 @@ import {
 } from '../../services/api';
 import { spacing } from '../../styles/spacing';
 import { headerStyles } from '../../styles/headerStyles';
+import { getSubjectIcon } from '../../utils/subjectIcons';
 import { Icon, SafeScreen } from '../../components/ui';
 
 const SEMESTER_OPTIONS = ['2023.2', '2024.1', '2024.2'];
@@ -198,6 +199,7 @@ export const AcademicoScreen = ({ navigation }) => {
                     key={d.subjectId}
                     style={[styles.disciplinaCard, { backgroundColor: theme.surface }]}
                   >
+                    <Icon name={getSubjectIcon(d.name)} size={28} color={theme.primary} style={styles.disciplinaIcon} />
                     <View style={styles.disciplinaMain}>
                       <Text style={[styles.disciplinaName, { color: theme.text }]}>
                         {d.name}
@@ -207,7 +209,7 @@ export const AcademicoScreen = ({ navigation }) => {
                       </Text>
                     </View>
                     <View style={[styles.badge, { backgroundColor: cfg.color }]}>
-                      <Text style={styles.badgeText}>{cfg.label}</Text>
+                      <Text style={[styles.badgeText, { color: theme.primaryText }]}>{cfg.label}</Text>
                     </View>
                   </View>
                 );
@@ -411,6 +413,7 @@ const styles = StyleSheet.create({
     borderRadius: 12,
     marginBottom: spacing.sm,
   },
+  disciplinaIcon: { marginRight: spacing.base },
   disciplinaMain: { flex: 1 },
   disciplinaName: {
     fontSize: 16,

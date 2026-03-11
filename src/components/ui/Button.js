@@ -36,11 +36,12 @@ export const Button = ({
   };
 
   const isPrimary = variant === 'primary';
+  const btnTextColor = isPrimary ? (theme.primaryText || '#FFFFFF') : theme.primary;
   const buttonStyle = [
     styles.button,
     isPrimary
       ? { backgroundColor: theme.primary }
-      : { backgroundColor: 'transparent', borderWidth: 2, borderColor: theme.primary },
+      : { backgroundColor: 'transparent', borderWidth: theme.borderWidth || 2, borderColor: theme.primary },
   ];
 
   return (
@@ -53,12 +54,12 @@ export const Button = ({
       activeOpacity={1}
     >
       {loading ? (
-        <ActivityIndicator color={isPrimary ? '#FFFFFF' : theme.primary} />
+        <ActivityIndicator color={btnTextColor} />
       ) : (
         <Text
           style={[
             styles.text,
-            { color: isPrimary ? '#FFFFFF' : theme.primary },
+            { color: btnTextColor },
             textStyle,
           ]}
         >

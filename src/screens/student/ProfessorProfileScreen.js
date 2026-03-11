@@ -16,6 +16,7 @@ import {
 import { LinearGradient } from 'expo-linear-gradient';
 import { useTheme } from '../../context/ThemeContext';
 import { Icon, SafeScreen } from '../../components/ui';
+import { getSubjectIcon } from '../../utils/subjectIcons';
 import { getTeacher } from '../../services/api';
 import { spacing } from '../../styles/spacing';
 import { blue, orange } from '../../styles/colors';
@@ -124,6 +125,7 @@ export const ProfessorProfileScreen = ({ route, navigation }) => {
                   key={i}
                   style={[styles.tag, { backgroundColor: theme.primary + '20' }]}
                 >
+                  <Icon name={getSubjectIcon(m)} size={18} color={theme.primary} style={styles.tagIcon} />
                   <Text style={[styles.tagText, { color: theme.primary }]}>{m}</Text>
                 </View>
               ))}
@@ -275,10 +277,13 @@ const styles = StyleSheet.create({
     gap: spacing.sm,
   },
   tag: {
+    flexDirection: 'row',
+    alignItems: 'center',
     paddingHorizontal: spacing.base,
     paddingVertical: spacing.xs,
     borderRadius: 20,
   },
+  tagIcon: { marginRight: spacing.xs },
   tagText: {
     fontSize: 13,
     fontWeight: '600',

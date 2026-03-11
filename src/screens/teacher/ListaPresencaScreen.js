@@ -25,6 +25,7 @@ import {
   saveAttendanceList,
 } from '../../services/api';
 import { spacing } from '../../styles/spacing';
+import { getSubjectIcon } from '../../utils/subjectIcons';
 
 export const ListaPresencaScreen = ({ route, navigation }) => {
   const { theme } = useTheme();
@@ -126,6 +127,8 @@ export const ListaPresencaScreen = ({ route, navigation }) => {
         {/* Header */}
         <Animated.View entering={FadeInDown.duration(350)}>
           <View style={[styles.header, { backgroundColor: theme.surface }]}>
+            <Icon name={getSubjectIcon(subjectName || '')} size={32} color={theme.primary} style={styles.headerIcon} />
+            <View style={styles.headerContent}>
             <Text style={[styles.title, { color: theme.text }]}>
               Lista de presença
             </Text>
@@ -135,6 +138,7 @@ export const ListaPresencaScreen = ({ route, navigation }) => {
             <Text style={[styles.count, { color: theme.primary }]}>
               {presentCount}/{alunos.length} presentes
             </Text>
+            </View>
           </View>
         </Animated.View>
 
@@ -160,7 +164,7 @@ export const ListaPresencaScreen = ({ route, navigation }) => {
                   ]}
                 >
                   {a.present && (
-                    <Icon name="checkmark" size={18} color="#FFF" />
+                    <Icon name="checkmark" size={18} color={theme.primaryText} />
                   )}
                 </View>
                 <View style={styles.alunoInfo}>
@@ -195,7 +199,7 @@ export const ListaPresencaScreen = ({ route, navigation }) => {
                     )
                   }
                   trackColor={{ false: theme.border, true: theme.primary }}
-                  thumbColor="#FFF"
+                  thumbColor={theme.primaryText}
                 />
               </TouchableOpacity>
               <TextInput
@@ -232,7 +236,7 @@ const styles = StyleSheet.create({
   backBtnWrapper: {
     position: 'absolute',
     top: 48,
-    left: spacing.base,
+    left: spacing.lg,
     zIndex: 10,
   },
   backBtn: {
@@ -248,17 +252,20 @@ const styles = StyleSheet.create({
     elevation: 4,
   },
   container: { flex: 1 },
-  content: { paddingTop: 100, paddingBottom: spacing.xxl },
+  content: { paddingHorizontal: spacing.lg, paddingTop: 100, paddingBottom: spacing.xxl },
   header: {
-    margin: spacing.base,
+    marginBottom: spacing.base,
     padding: spacing.lg,
     borderRadius: 12,
+    flexDirection: 'row',
+    alignItems: 'center',
   },
+  headerIcon: { marginRight: spacing.base },
+  headerContent: { flex: 1 },
   title: { fontSize: 20, fontWeight: '700' },
   subtitle: { fontSize: 14, marginTop: spacing.xs },
   count: { fontSize: 18, fontWeight: '600', marginTop: spacing.sm },
   alunoCard: {
-    marginHorizontal: spacing.base,
     marginBottom: spacing.sm,
     padding: spacing.base,
     borderRadius: 12,
@@ -294,5 +301,5 @@ const styles = StyleSheet.create({
     minHeight: 60,
     textAlignVertical: 'top',
   },
-  footer: { padding: spacing.lg },
+  footer: { paddingHorizontal: spacing.lg, paddingVertical: spacing.lg },
 });

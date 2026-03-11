@@ -22,6 +22,7 @@ import {
 } from '../../services/api';
 import { spacing } from '../../styles/spacing';
 import { headerStyles } from '../../styles/headerStyles';
+import { getSubjectIcon } from '../../utils/subjectIcons';
 import { SafeScreen, Icon } from '../../components/ui';
 
 export const HistoricoChamadasScreen = ({ route, navigation }) => {
@@ -75,20 +76,20 @@ export const HistoricoChamadasScreen = ({ route, navigation }) => {
   return (
     <SafeScreen>
       <View style={[headerStyles.header, { backgroundColor: theme.background }]}>
-        {showBack ? (
-          <TouchableOpacity
-            onPress={() => navigation.goBack()}
-            activeOpacity={0.8}
-            style={headerStyles.menuBtn}
-          >
-            <Icon name="arrow-back" size={24} color={theme.text} />
-          </TouchableOpacity>
-        ) : (
-          <View style={headerStyles.menuBtn} />
-        )}
-        <Text style={[styles.headerTitle, { color: theme.text }]}>
-          {classId && turmaInfo?.subjectName ? `Histórico - ${turmaInfo.subjectName}` : 'Chamadas'}
-        </Text>
+        <View style={styles.headerLeft}>
+          {showBack ? (
+            <TouchableOpacity
+              onPress={() => navigation.goBack()}
+              activeOpacity={0.8}
+              style={headerStyles.menuBtn}
+            >
+              <Icon name="arrow-back" size={24} color={theme.text} />
+            </TouchableOpacity>
+          ) : null}
+          <Text style={[styles.headerTitle, { color: theme.text }]}>
+            {classId && turmaInfo?.subjectName ? `Histórico - ${turmaInfo.subjectName}` : 'Chamadas'}
+          </Text>
+        </View>
         <TouchableOpacity style={headerStyles.menuBtn} onPress={openMenu}>
           <Icon name="menu" size={24} color={theme.text} />
         </TouchableOpacity>
@@ -98,12 +99,6 @@ export const HistoricoChamadasScreen = ({ route, navigation }) => {
         showsVerticalScrollIndicator={false}
         contentContainerStyle={[styles.content, !showBack && { paddingTop: spacing.xl }]}
       >
-        <Text style={[styles.title, { color: theme.text }]}>
-          {classId && turmaInfo?.subjectName
-            ? `Histórico completo - ${turmaInfo.subjectName}`
-            : 'Histórico de chamadas'}
-        </Text>
-
         {calls.length === 0 ? (
           <View style={[styles.emptyCard, { backgroundColor: theme.surface }]}>
             <Icon name="list-outline" size={48} color={theme.textSecondary} />
@@ -121,6 +116,7 @@ export const HistoricoChamadasScreen = ({ route, navigation }) => {
               >
                 <View style={[styles.card, { backgroundColor: theme.surface }]}>
                   <View style={styles.cardHeader}>
+                    <Icon name={getSubjectIcon(d.subjectName || '')} size={28} color={theme.primary} style={styles.cardIcon} />
                     <Text style={[styles.cardTitle, { color: theme.text }]}>
                       {d.subjectName || 'Disciplina'}
                     </Text>
@@ -135,7 +131,7 @@ export const HistoricoChamadasScreen = ({ route, navigation }) => {
                         },
                       ]}
                     >
-                      <Text style={styles.badgeText}>
+                      <Text style={[styles.badgeText, { color: theme.primaryText }]}>
                         {call.status === 'active' ? 'Ativa' : 'Encerrada'}
                       </Text>
                     </View>
@@ -187,10 +183,15 @@ export const HistoricoChamadasScreen = ({ route, navigation }) => {
 };
 
 const styles = StyleSheet.create({
-  headerTitle: { fontSize: 20, fontWeight: '700', flex: 1, textAlign: 'center' },
+  headerLeft: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    flex: 1,
+    minWidth: 0,
+  },
+  headerTitle: { fontSize: 20, fontWeight: '700' },
   container: { flex: 1 },
-  content: { paddingTop: spacing.xl, paddingBottom: spacing.xxl },
-  title: { fontSize: 24, fontWeight: '700', marginBottom: spacing.lg },
+  content: { paddingHorizontal: spacing.lg, paddingTop: spacing.xl, paddingBottom: spacing.xxl },
   card: {
     padding: spacing.lg,
     borderRadius: 12,
@@ -201,7 +202,8 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
   },
-  cardTitle: { fontSize: 16, fontWeight: '600' },
+  cardIcon: { marginRight: spacing.sm },
+  cardTitle: { fontSize: 16, fontWeight: '600', flex: 1 },
   badge: {
     paddingHorizontal: spacing.sm,
     paddingVertical: 4,

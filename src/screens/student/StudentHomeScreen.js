@@ -32,6 +32,7 @@ import {
 } from '../../services/api';
 import { spacing } from '../../styles/spacing';
 import { headerStyles } from '../../styles/headerStyles';
+import { getSubjectIcon } from '../../utils/subjectIcons';
 import { blue, darkBlue } from '../../styles/colors';
 
 const { width } = Dimensions.get('window');
@@ -88,7 +89,7 @@ function getAulaStatus(aula) {
 }
 
 export const StudentHomeScreen = ({ navigation }) => {
-  const { theme, isDarkMode } = useTheme();
+  const { theme, isDarkMode, highContrast } = useTheme();
   const insets = useSafeAreaInsets();
   const { user } = useAuth();
   const { openMenu } = useMenu();
@@ -192,7 +193,7 @@ export const StudentHomeScreen = ({ navigation }) => {
               {student?.photo ? (
                 <Image source={{ uri: student.photo }} style={styles.avatarImage} />
               ) : (
-                <Icon name="person" size={28} color="#FFFFFF" />
+                <Icon name="person" size={28} color={theme.primaryText} />
               )}
             </View>
           </TouchableOpacity>
@@ -252,8 +253,8 @@ export const StudentHomeScreen = ({ navigation }) => {
           ]}
         >
           <View style={styles.bannerContent}>
-            <Text style={styles.bannerTitle}>Aproveite!</Text>
-            <Text style={styles.bannerSubtitle}>
+            <Text style={[styles.bannerTitle, { color: theme.primaryText }]}>Aproveite!</Text>
+            <Text style={[styles.bannerSubtitle, { color: theme.primaryText }]}>
               Matricule-se e aproveite 3 aulas gratuitas para experimentar.
             </Text>
             <TouchableOpacity
@@ -269,7 +270,7 @@ export const StudentHomeScreen = ({ navigation }) => {
                 style={[
                   styles.bannerButtonText,
                   {
-                    color: isDarkMode ? darkBlue[900] : '#FFFFFF',
+                    color: isDarkMode ? darkBlue[900] : theme.primaryText,
                     fontSize: isDarkMode ? 16 : 14,
                   },
                 ]}
@@ -328,7 +329,7 @@ export const StudentHomeScreen = ({ navigation }) => {
                 style={[
                   styles.categoryText,
                   {
-                    color: selectedCategory === i ? '#FFFFFF' : theme.text,
+                    color: selectedCategory === i ? theme.primaryText : theme.text,
                   },
                 ]}
               >
@@ -402,20 +403,21 @@ export const StudentHomeScreen = ({ navigation }) => {
                   onPress={() => setSelectedAula(aula)}
                   activeOpacity={0.7}
                 >
+                  <Icon name={getSubjectIcon(aula.disciplina)} size={28} color={theme.primary} style={styles.lessonCardIcon} />
                   <Text
-                    style={[styles.lessonCardTime, { color: theme.primary }]}
+                    style={[styles.lessonCardTime, { color: highContrast ? theme.primaryText : theme.primary }]}
                     numberOfLines={1}
                   >
                     {aula.hora} - {aula.horaFim}
                   </Text>
                   <Text
-                    style={[styles.lessonCardTitle, { color: theme.text }]}
+                    style={[styles.lessonCardTitle, { color: highContrast ? theme.primaryText : theme.text }]}
                     numberOfLines={2}
                   >
                     {aula.disciplina}
                   </Text>
                   <Text
-                    style={[styles.lessonCardMeta, { color: theme.textSecondary }]}
+                    style={[styles.lessonCardMeta, { color: highContrast ? theme.primaryText : theme.textSecondary }]}
                     numberOfLines={1}
                   >
                     {aula.professor}
@@ -493,7 +495,7 @@ export const StudentHomeScreen = ({ navigation }) => {
                     }
                       activeOpacity={0.8}
                     >
-                      <Text style={styles.teacherCardButtonText}>
+                      <Text style={[styles.teacherCardButtonText, { color: theme.primaryText }]}>
                         Saber mais
                       </Text>
                     </TouchableOpacity>
@@ -547,7 +549,7 @@ export const StudentHomeScreen = ({ navigation }) => {
                   </TouchableOpacity>
                   <View style={[styles.modalTeacher, { backgroundColor: blue[100] }]}>
                     <View style={[styles.modalTeacherAvatar, { backgroundColor: theme.primary }]}>
-                      <Icon name="person" size={48} color="#FFFFFF" />
+                      <Icon name="person" size={48} color={theme.primaryText} />
                     </View>
                     <Text style={[styles.modalTeacherName, { color: theme.text }]}>
                       {selectedAula.professor}
@@ -846,7 +848,9 @@ const styles = StyleSheet.create({
   lessonCard: {
     padding: spacing.base,
     borderRadius: 12,
-    minHeight: 100,
+  },
+  lessonCardIcon: {
+    marginBottom: spacing.sm,
   },
   lessonCardTime: {
     fontSize: 12,

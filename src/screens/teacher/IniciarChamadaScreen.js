@@ -20,6 +20,7 @@ import { Button, SafeScreen, Icon } from '../../components/ui';
 import { getClassById, getSubjectById, createCall } from '../../services/api';
 import { useAuth } from '../../context/AuthContext';
 import { spacing } from '../../styles/spacing';
+import { getSubjectIcon } from '../../utils/subjectIcons';
 
 const RADIUS_OPTIONS = [200, 300, 500, 700, 1000];
 
@@ -132,15 +133,20 @@ export const IniciarChamadaScreen = ({ route, navigation }) => {
         {/* Dados da aula */}
         <Animated.View entering={FadeInDown.duration(350)}>
           <View style={[styles.info, { backgroundColor: theme.surface }]}>
-            <Text style={[styles.className, { color: theme.text }]}>
-              {subjectName || 'Disciplina'}
-            </Text>
-            <Text style={[styles.schedule, { color: theme.textSecondary }]}>
-              {classData?.schedule} - {classData?.room}
-            </Text>
-            <Text style={[styles.horarioLabel, { color: theme.textSecondary }]}>
-              Horário da chamada: {new Date().toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })}
-            </Text>
+            <View style={styles.infoRow}>
+              <Icon name={getSubjectIcon(subjectName || '')} size={32} color={theme.primary} style={styles.infoIcon} />
+              <View style={styles.infoContent}>
+                <Text style={[styles.className, { color: theme.text }]}>
+                  {subjectName || 'Disciplina'}
+                </Text>
+                <Text style={[styles.schedule, { color: theme.textSecondary }]}>
+                  {classData?.schedule} - {classData?.room}
+                </Text>
+                <Text style={[styles.horarioLabel, { color: theme.textSecondary }]}>
+                  Horário da chamada: {new Date().toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })}
+                </Text>
+              </View>
+            </View>
           </View>
         </Animated.View>
 
@@ -186,7 +192,7 @@ export const IniciarChamadaScreen = ({ route, navigation }) => {
                 value={!autoRadius}
                 onValueChange={(v) => setAutoRadius(!v)}
                 trackColor={{ false: theme.border, true: theme.primary }}
-                thumbColor="#FFF"
+                thumbColor={theme.primaryText}
               />
             </View>
             <Text style={[styles.radiusMode, { color: theme.textSecondary }]}>
@@ -209,7 +215,7 @@ export const IniciarChamadaScreen = ({ route, navigation }) => {
                     <Text
                       style={[
                         styles.radiusBtnText,
-                        { color: radius === r ? '#FFF' : theme.text },
+                        { color: radius === r ? theme.primaryText : theme.text },
                       ]}
                     >
                       {r}m
@@ -244,7 +250,7 @@ const styles = StyleSheet.create({
   backBtnWrapper: {
     position: 'absolute',
     top: 48,
-    left: spacing.base,
+    left: spacing.lg,
     zIndex: 10,
   },
   backBtn: {
@@ -261,21 +267,27 @@ const styles = StyleSheet.create({
   },
   container: { flex: 1, paddingTop: 100 },
   info: {
-    margin: spacing.base,
+    marginHorizontal: spacing.lg,
+    marginTop: spacing.base,
+    marginBottom: spacing.base,
     padding: spacing.lg,
     borderRadius: 12,
   },
+  infoRow: { flexDirection: 'row', alignItems: 'flex-start' },
+  infoIcon: { marginRight: spacing.base },
+  infoContent: { flex: 1 },
   className: { fontSize: 18, fontWeight: '600' },
   schedule: { fontSize: 14, marginTop: spacing.xs },
   horarioLabel: { fontSize: 13, marginTop: spacing.sm },
   mapContainer: {
     height: 220,
-    marginHorizontal: spacing.base,
+    marginHorizontal: spacing.lg,
+    marginBottom: spacing.base,
     borderRadius: 16,
     overflow: 'hidden',
   },
   map: { width: '100%', height: '100%' },
-  radiusSection: { padding: spacing.base },
+  radiusSection: { paddingHorizontal: spacing.lg, paddingVertical: spacing.base },
   radiusCard: { padding: spacing.lg, borderRadius: 12 },
   radiusHeader: {
     flexDirection: 'row',
@@ -298,5 +310,5 @@ const styles = StyleSheet.create({
   },
   radiusBtnText: { fontSize: 14, fontWeight: '600' },
   radiusInfo: { fontSize: 14, marginTop: spacing.base },
-  footer: { padding: spacing.lg, paddingBottom: spacing.xxl },
+  footer: { paddingHorizontal: spacing.lg, paddingVertical: spacing.lg, paddingBottom: spacing.xxl },
 });

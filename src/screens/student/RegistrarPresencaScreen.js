@@ -276,7 +276,7 @@ export const RegistrarPresencaScreen = ({ route, navigation }) => {
             textStyle={
               !isWithinRadius()
                 ? { color: theme.textSecondary }
-                : { color: '#FFFFFF' }
+                : { color: theme.primaryText }
             }
           />
         </View>

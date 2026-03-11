@@ -1,5 +1,5 @@
 /**
- * Perfil Professor - Design moderno e elegante para mobile
+ * Perfil Professor - Header padrão, foto, nome, resumo e informações
  */
 
 import React, { useState, useEffect } from 'react';
@@ -11,8 +11,6 @@ import {
   TouchableOpacity,
   Image,
 } from 'react-native';
-import { LinearGradient } from 'expo-linear-gradient';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useTheme } from '../../context/ThemeContext';
 import { useAuth } from '../../context/AuthContext';
 import { useMenu } from '../../context/MenuContext';
@@ -20,11 +18,9 @@ import { getTeacher } from '../../services/api';
 import { SafeScreen, Icon } from '../../components/ui';
 import { spacing } from '../../styles/spacing';
 import { headerStyles } from '../../styles/headerStyles';
-import { blue, darkBlue } from '../../styles/colors';
 
 export const TeacherPerfilScreen = ({ navigation }) => {
-  const insets = useSafeAreaInsets();
-  const { theme, isDarkMode } = useTheme();
+  const { theme } = useTheme();
   const { user } = useAuth();
   const { openMenu } = useMenu();
   const [teacher, setTeacher] = useState(null);
@@ -35,31 +31,20 @@ export const TeacherPerfilScreen = ({ navigation }) => {
     }
   }, [user]);
 
-  const gradientColors = isDarkMode
-    ? [theme.primary, darkBlue[800]]
-    : [theme.primary, blue[600]];
+  const introText = teacher?.curriculoResumo
+    ? teacher.especialidade
+      ? `${teacher.curriculoResumo} Áreas de atuação: ${teacher.especialidade}.`
+      : teacher.curriculoResumo
+    : teacher?.especialidade
+      ? `Professor com expertise em ${teacher.especialidade}. Metodologias ativas e ensino prático.`
+      : 'Professor dedicado ao ensino e à formação de profissionais. Experiência em metodologias ativas e técnicas de ensino que priorizam o aprendizado prático e a aplicação do conhecimento.';
 
   return (
     <SafeScreen edges={['top']}>
-      <View
-        style={[
-          headerStyles.header,
-          styles.topBar,
-          { backgroundColor: 'transparent', paddingTop: insets.top + spacing.sm },
-        ]}
-      >
-        <TouchableOpacity
-          onPress={() => navigation.navigate('TeacherHome')}
-          style={[headerStyles.iconButton, styles.iconBtnLight]}
-        >
-          <Icon name="arrow-back" size={24} color="#FFF" />
-        </TouchableOpacity>
-        <Text style={styles.topBarTitle}>Perfil</Text>
-        <TouchableOpacity
-          style={[headerStyles.menuBtn, styles.iconBtnLight]}
-          onPress={openMenu}
-        >
-          <Icon name="menu" size={24} color="#FFF" />
+      <View style={[headerStyles.header, { backgroundColor: theme.background }]}>
+        <Text style={[styles.headerTitle, { color: theme.text }]}>Perfil</Text>
+        <TouchableOpacity style={headerStyles.menuBtn} onPress={openMenu}>
+          <Icon name="menu" size={24} color={theme.text} />
         </TouchableOpacity>
       </View>
 
@@ -68,29 +53,21 @@ export const TeacherPerfilScreen = ({ navigation }) => {
         showsVerticalScrollIndicator={false}
         contentContainerStyle={styles.scrollContent}
       >
-        {/* Hero com gradiente */}
-        <LinearGradient
-          colors={gradientColors}
-          style={styles.hero}
-          start={{ x: 0, y: 0 }}
-          end={{ x: 1, y: 1 }}
-        >
-          <View style={styles.heroContent}>
-            <View style={[styles.avatarWrapper, { borderColor: 'rgba(255,255,255,0.4)' }]}>
-              <View style={[styles.avatar, { backgroundColor: 'rgba(255,255,255,0.2)' }]}>
-                {teacher?.photo ? (
-                  <Image source={{ uri: teacher.photo }} style={styles.avatarImage} />
-                ) : (
-                  <Icon name="person" size={56} color="#FFF" />
-                )}
-              </View>
-            </View>
-            <Text style={styles.name}>{teacher?.name || 'Professor'}</Text>
-            <View style={styles.badge}>
-              <Text style={styles.badgeText}>Professor</Text>
-            </View>
+        {/* Foto e nome */}
+        <View style={[styles.profileSection, { backgroundColor: theme.surface }]}>
+          <View style={[styles.avatar, { backgroundColor: theme.primary + '20' }]}>
+            {teacher?.photo ? (
+              <Image source={{ uri: teacher.photo }} style={styles.avatarImage} />
+            ) : (
+              <Icon name="person" size={80} color={theme.primary} />
+            )}
           </View>
-        </LinearGradient>
+          <Text style={[styles.name, { color: theme.text }]}>{teacher?.name || 'Professor'}</Text>
+          <View style={[styles.badge, { backgroundColor: theme.primary }]}>
+            <Text style={[styles.badgeText, { color: theme.primaryText }]}>Professor</Text>
+          </View>
+          <Text style={[styles.intro, { color: theme.textSecondary }]}>{introText}</Text>
+        </View>
 
         {/* Cards de informação */}
         <View style={styles.cardsSection}>
@@ -138,16 +115,7 @@ export const TeacherPerfilScreen = ({ navigation }) => {
           <Text style={[styles.sectionTitle, { color: theme.textSecondary }]}>Conta</Text>
           <TouchableOpacity
             style={[styles.actionItem, { backgroundColor: theme.surface }]}
-            onPress={() => navigation.navigate('Configuracoes')}
-            activeOpacity={0.7}
-          >
-            <Icon name="settings-outline" size={24} color={theme.primary} />
-            <Text style={[styles.actionText, { color: theme.text }]}>Configurações</Text>
-            <Icon name="chevron-forward" size={20} color={theme.textSecondary} />
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={[styles.actionItem, { backgroundColor: theme.surface }]}
-            onPress={() => {}}
+            onPress={() => navigation.navigate('AlterarSenha')}
             activeOpacity={0.7}
           >
             <Icon name="lock-closed" size={24} color={theme.primary} />
@@ -163,47 +131,23 @@ export const TeacherPerfilScreen = ({ navigation }) => {
 };
 
 const styles = StyleSheet.create({
-  topBar: {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    right: 0,
-    zIndex: 10,
-  },
-  iconBtnLight: {
-    backgroundColor: 'rgba(255,255,255,0.3)',
-    borderRadius: 22,
-  },
-  topBarTitle: {
-    fontSize: 18,
-    fontWeight: '600',
-    color: '#FFF',
-  },
+  headerTitle: { fontSize: 20, fontWeight: '700' },
   container: { flex: 1 },
   scrollContent: { paddingBottom: spacing.xxl },
-  hero: {
-    paddingTop: spacing.xxl + 20,
-    paddingBottom: spacing.xl * 2,
-    paddingHorizontal: spacing.lg,
+  profileSection: {
+    margin: spacing.lg,
+    padding: spacing.xl,
+    borderRadius: 16,
     alignItems: 'center',
-    marginBottom: -spacing.xl,
-  },
-  heroContent: {
-    alignItems: 'center',
-  },
-  avatarWrapper: {
-    padding: 4,
-    borderRadius: 60,
-    borderWidth: 3,
-    marginBottom: spacing.base,
   },
   avatar: {
-    width: 110,
-    height: 110,
-    borderRadius: 55,
+    width: 160,
+    height: 160,
+    borderRadius: 80,
     justifyContent: 'center',
     alignItems: 'center',
     overflow: 'hidden',
+    marginBottom: spacing.base,
   },
   avatarImage: {
     width: '100%',
@@ -213,20 +157,23 @@ const styles = StyleSheet.create({
   name: {
     fontSize: 24,
     fontWeight: '700',
-    color: '#FFF',
     marginBottom: spacing.sm,
     textAlign: 'center',
   },
   badge: {
-    backgroundColor: 'rgba(255,255,255,0.25)',
     paddingHorizontal: spacing.base,
     paddingVertical: spacing.xs,
     borderRadius: 20,
+    marginBottom: spacing.lg,
   },
   badgeText: {
     fontSize: 13,
     fontWeight: '600',
-    color: '#FFF',
+  },
+  intro: {
+    fontSize: 16,
+    lineHeight: 24,
+    textAlign: 'center',
   },
   cardsSection: {
     paddingHorizontal: spacing.lg,

@@ -60,7 +60,7 @@ export const ModalError = ({ visible, title, message, type = 'error', onClose })
             style={[styles.button, { backgroundColor: theme.primary }]}
             onPress={onClose}
           >
-            <Text style={styles.buttonText}>OK</Text>
+            <Text style={[styles.buttonText, { color: theme.primaryText }]}>OK</Text>
           </TouchableOpacity>
         </Pressable>
         </Pressable>
@@ -102,7 +102,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   buttonText: {
-    color: '#FFFFFF',
     fontSize: 16,
     fontWeight: '600',
   },

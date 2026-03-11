@@ -14,6 +14,7 @@ import {
 import { useTheme } from '../../context/ThemeContext';
 import { useAuth } from '../../context/AuthContext';
 import { SafeScreen, Icon, Button } from '../../components/ui';
+import { getSubjectIcon } from '../../utils/subjectIcons';
 import { getStudent, getCourseById, getDisciplinasBySemester, getSubjects } from '../../services/api';
 import { spacing } from '../../styles/spacing';
 import { headerStyles } from '../../styles/headerStyles';
@@ -101,6 +102,7 @@ export const HistoricoAcademicoScreen = ({ navigation }) => {
                 key={`${item.subjectId}-${item.semester}-${i}`}
                 style={[styles.row, { backgroundColor: theme.surface }]}
               >
+                <Icon name={getSubjectIcon(item.name)} size={24} color={theme.primary} style={styles.rowIcon} />
                 <View style={styles.rowMain}>
                   <Text style={[styles.discName, { color: theme.text }]}>{item.name}</Text>
                   <Text style={[styles.semester, { color: theme.textSecondary }]}>
@@ -108,7 +110,7 @@ export const HistoricoAcademicoScreen = ({ navigation }) => {
                   </Text>
                 </View>
                 <View style={[styles.badge, { backgroundColor: cfg.color }]}>
-                  <Text style={styles.badgeText}>{cfg.label}</Text>
+                  <Text style={[styles.badgeText, { color: theme.primaryText }]}>{cfg.label}</Text>
                 </View>
               </View>
             );
@@ -137,6 +139,7 @@ const styles = StyleSheet.create({
     borderRadius: 12,
     marginBottom: spacing.sm,
   },
+  rowIcon: { marginRight: spacing.base },
   rowMain: { flex: 1 },
   discName: { fontSize: 16, fontWeight: '600' },
   semester: { fontSize: 12, marginTop: 2 },

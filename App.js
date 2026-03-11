@@ -50,15 +50,15 @@ export default function App() {
           <ActivityIndicator size="large" color={blue[500]} />
         </SafeAreaView>
       ) : (
-      <ThemeProvider>
-        <AccessibilityProvider>
+      <AccessibilityProvider>
+        <ThemeProvider>
           <AuthProvider>
             <FeedbackProvider>
               <AppContent />
             </FeedbackProvider>
           </AuthProvider>
-        </AccessibilityProvider>
-      </ThemeProvider>
+        </ThemeProvider>
+      </AccessibilityProvider>
       )}
     </SafeAreaProvider>
   );

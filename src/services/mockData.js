@@ -11,7 +11,7 @@ export const mockUsers = [
   { id: '2', email: 'professor@edusenac.com', password: '123456', type: 'teacher', teacherId: '1' },
 ];
 
-// Alunos
+// Alunos - simulando alunos de diferentes cursos SENAC MG
 export const mockStudents = [
   {
     id: '1',
@@ -21,6 +21,87 @@ export const mockStudents = [
     cpf: '12345678901',
     courseId: '1',
     photo: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400',
+  },
+  {
+    id: '5',
+    name: 'Lucas Mendes',
+    email: 'lucas@edusenac.com',
+    enrollment: '2024005',
+    cpf: '56789012345',
+    courseId: '1',
+    photo: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=400',
+  },
+  {
+    id: '6',
+    name: 'Fernanda Costa',
+    email: 'fernanda.a@edusenac.com',
+    enrollment: '2024006',
+    cpf: '67890123456',
+    courseId: '1',
+    photo: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=400',
+  },
+  {
+    id: '7',
+    name: 'Rafael Souza',
+    email: 'rafael@edusenac.com',
+    enrollment: '2024007',
+    cpf: '78901234567',
+    courseId: '1',
+    photo: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400',
+  },
+  {
+    id: '8',
+    name: 'Juliana Lima',
+    email: 'juliana@edusenac.com',
+    enrollment: '2024008',
+    cpf: '89012345678',
+    courseId: '1',
+    photo: 'https://images.unsplash.com/photo-1580489944761-15a19d654956?w=400',
+  },
+  {
+    id: '9',
+    name: 'Bruno Almeida',
+    email: 'bruno@edusenac.com',
+    enrollment: '2024009',
+    cpf: '90123456789',
+    courseId: '1',
+    photo: 'https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=400',
+  },
+  {
+    id: '10',
+    name: 'Camila Rodrigues',
+    email: 'camila@edusenac.com',
+    enrollment: '2024010',
+    cpf: '01234567890',
+    courseId: '1',
+    photo: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=400',
+  },
+  {
+    id: '2',
+    name: 'Mariana Oliveira',
+    email: 'mariana@edusenac.com',
+    enrollment: '2024002',
+    cpf: '23456789012',
+    courseId: '2',
+    photo: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=400',
+  },
+  {
+    id: '3',
+    name: 'Pedro Henrique',
+    email: 'pedro@edusenac.com',
+    enrollment: '2024003',
+    cpf: '34567890123',
+    courseId: '4',
+    photo: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=400',
+  },
+  {
+    id: '4',
+    name: 'Ana Carolina',
+    email: 'ana.c@edusenac.com',
+    enrollment: '2024004',
+    cpf: '45678901234',
+    courseId: '3',
+    photo: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=400',
   },
 ];
 
@@ -32,7 +113,7 @@ export const mockTeachers = [
     email: 'professor@edusenac.com',
     employeeId: 'EMP001',
     cpf: '98765432100',
-    department: 'Tecnologia da Informação',
+    department: 'Técnico em Desenvolvimento de Sistemas',
     photo: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=600',
     rating: 4.8,
     curriculoResumo:
@@ -44,7 +125,7 @@ export const mockTeachers = [
     ],
     especialidade: 'Desenvolvimento Mobile, React Native, Expo, UX em Apps',
     tempoCarreira: '12 anos',
-    materias: ['Programação Mobile', 'Desenvolvimento de Interfaces'],
+    materias: ['Programação Mobile', 'Banco de Dados', 'Desenvolvimento Web', 'Gestão de Pessoas', 'Redes de Computadores', 'Fundamentos de Enfermagem', 'Gestão de Estoques'],
     tese: 'Otimização de Performance em Aplicativos React Native para Dispositivos de Baixo Custo',
     pesquisa: 'Pesquisa em acessibilidade mobile e inclusão digital. Publicações em SBC e IEEE.',
   },
@@ -53,7 +134,7 @@ export const mockTeachers = [
     name: 'Carlos Oliveira',
     email: 'carlos@edusenac.com',
     employeeId: 'EMP002',
-    department: 'Tecnologia da Informação',
+    department: 'Técnico em Desenvolvimento de Sistemas',
     photo: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=600',
     rating: 4.5,
     curriculoResumo:
@@ -74,7 +155,7 @@ export const mockTeachers = [
     name: 'Ana Ferreira',
     email: 'ana@edusenac.com',
     employeeId: 'EMP003',
-    department: 'Tecnologia da Informação',
+    department: 'Técnico em Desenvolvimento de Sistemas',
     photo: 'https://images.unsplash.com/photo-1580489944761-15a19d654956?w=600',
     rating: 4.9,
     curriculoResumo:
@@ -90,19 +171,114 @@ export const mockTeachers = [
     tese: 'Frameworks JavaScript e Impacto na Acessibilidade de Aplicações Web',
     pesquisa: 'Estudos sobre WCAG e inclusão digital. Colaboradora em projetos open source.',
   },
+  {
+    id: '4',
+    name: 'Roberto Mendes',
+    email: 'roberto@edusenac.com',
+    employeeId: 'EMP004',
+    department: 'Técnico em Administração',
+    photo: 'https://images.unsplash.com/photo-1560250097-0b93528c311a?w=600',
+    rating: 4.6,
+    curriculoResumo: 'Especialista em gestão empresarial e planejamento estratégico. MBA em Administração.',
+    formacao: ['MBA em Gestão Empresarial - FGV', 'Graduação em Administração - UFMG'],
+    especialidade: 'Gestão de Pessoas, Marketing, Finanças',
+    tempoCarreira: '14 anos',
+    materias: ['Gestão de Pessoas', 'Contabilidade e Finanças', 'Marketing e Vendas'],
+  },
+  {
+    id: '5',
+    name: 'Fernanda Costa',
+    email: 'fernanda@edusenac.com',
+    employeeId: 'EMP005',
+    department: 'Técnico em Enfermagem',
+    photo: 'https://images.unsplash.com/photo-1559839734-2b71ea197ec2?w=600',
+    rating: 4.9,
+    curriculoResumo: 'Enfermeira com especialização em urgência e emergência. Experiência em ensino técnico.',
+    formacao: ['Especialização em Urgência e Emergência - UFMG', 'Graduação em Enfermagem - PUC Minas'],
+    especialidade: 'Fundamentos de Enfermagem, Semiologia, Anatomia',
+    tempoCarreira: '11 anos',
+    materias: ['Fundamentos de Enfermagem', 'Anatomia e Fisiologia', 'Semiologia e Semiotécnica'],
+  },
+  {
+    id: '6',
+    name: 'Paulo Souza',
+    email: 'paulo@edusenac.com',
+    employeeId: 'EMP006',
+    department: 'Técnico em Redes de Computadores',
+    photo: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=600',
+    rating: 4.7,
+    curriculoResumo: 'Especialista em redes e infraestrutura. Certificações Cisco e CompTIA.',
+    formacao: ['Especialização em Redes - CEFET', 'Graduação em Sistemas de Informação - UFMG'],
+    especialidade: 'Redes, Segurança da Informação, Infraestrutura',
+    tempoCarreira: '13 anos',
+    materias: ['Redes de Computadores', 'Segurança da Informação', 'Infraestrutura de TI'],
+  },
 ];
 
-// Cursos
+// Cursos - SENAC Minas Gerais (cursos técnicos oferecidos pela instituição)
 export const mockCourses = [
-  { id: '1', name: 'Tecnologia da Informação', code: 'TI' },
-  { id: '2', name: 'Administração', code: 'ADM' },
+  { id: '1', name: 'Técnico em Desenvolvimento de Sistemas', code: 'DS' },
+  { id: '2', name: 'Técnico em Administração', code: 'ADM' },
+  { id: '3', name: 'Técnico em Redes de Computadores', code: 'RED' },
+  { id: '4', name: 'Técnico em Enfermagem', code: 'ENF' },
+  { id: '5', name: 'Técnico em Logística', code: 'LOG' },
+  { id: '6', name: 'Técnico em Estética', code: 'EST' },
+  { id: '7', name: 'Técnico em Nutrição e Dietética', code: 'NUT' },
+  { id: '8', name: 'Técnico em Recursos Humanos', code: 'RH' },
+  { id: '9', name: 'Técnico em Segurança do Trabalho', code: 'SST' },
+  { id: '10', name: 'Técnico em Agronegócio', code: 'AGR' },
+  { id: '11', name: 'Técnico em Farmácia', code: 'FAR' },
 ];
 
-// Disciplinas (carga horária em horas)
+// Disciplinas (carga horária em horas) - por curso SENAC MG
 export const mockSubjects = [
+  // Curso 1 - Técnico em Desenvolvimento de Sistemas
   { id: '1', name: 'Programação Mobile', code: 'PM', courseId: '1', workload: 80 },
   { id: '2', name: 'Banco de Dados', code: 'BD', courseId: '1', workload: 60 },
   { id: '3', name: 'Desenvolvimento Web', code: 'DW', courseId: '1', workload: 80 },
+  { id: '4', name: 'Algoritmos e Programação', code: 'AP', courseId: '1', workload: 80 },
+  { id: '5', name: 'Análise de Sistemas', code: 'AS', courseId: '1', workload: 60 },
+  // Curso 2 - Técnico em Administração
+  { id: '6', name: 'Gestão de Pessoas', code: 'GP', courseId: '2', workload: 60 },
+  { id: '7', name: 'Contabilidade e Finanças', code: 'CF', courseId: '2', workload: 80 },
+  { id: '8', name: 'Marketing e Vendas', code: 'MV', courseId: '2', workload: 60 },
+  { id: '9', name: 'Logística Empresarial', code: 'LE', courseId: '2', workload: 60 },
+  // Curso 3 - Técnico em Redes de Computadores
+  { id: '10', name: 'Redes de Computadores', code: 'RC', courseId: '3', workload: 80 },
+  { id: '11', name: 'Segurança da Informação', code: 'SI', courseId: '3', workload: 60 },
+  { id: '12', name: 'Infraestrutura de TI', code: 'IT', courseId: '3', workload: 80 },
+  // Curso 4 - Técnico em Enfermagem
+  { id: '13', name: 'Fundamentos de Enfermagem', code: 'FE', courseId: '4', workload: 120 },
+  { id: '14', name: 'Anatomia e Fisiologia', code: 'AF', courseId: '4', workload: 80 },
+  { id: '15', name: 'Semiologia e Semiotécnica', code: 'SS', courseId: '4', workload: 80 },
+  // Curso 5 - Técnico em Logística
+  { id: '16', name: 'Gestão de Estoques', code: 'GE', courseId: '5', workload: 60 },
+  { id: '17', name: 'Transporte e Distribuição', code: 'TD', courseId: '5', workload: 80 },
+  { id: '18', name: 'Compras e Suprimentos', code: 'CS', courseId: '5', workload: 60 },
+  // Curso 6 - Técnico em Estética
+  { id: '19', name: 'Estética Facial', code: 'EF', courseId: '6', workload: 80 },
+  { id: '20', name: 'Estética Corporal', code: 'EC', courseId: '6', workload: 80 },
+  { id: '21', name: 'Cosmetologia', code: 'COS', courseId: '6', workload: 60 },
+  // Curso 7 - Técnico em Nutrição e Dietética
+  { id: '22', name: 'Nutrição Clínica', code: 'NC', courseId: '7', workload: 80 },
+  { id: '23', name: 'Técnica Dietética', code: 'TD2', courseId: '7', workload: 80 },
+  { id: '24', name: 'Higiene e Segurança Alimentar', code: 'HSA', courseId: '7', workload: 60 },
+  // Curso 8 - Técnico em Recursos Humanos
+  { id: '25', name: 'Recrutamento e Seleção', code: 'RS', courseId: '8', workload: 60 },
+  { id: '26', name: 'Treinamento e Desenvolvimento', code: 'TED', courseId: '8', workload: 60 },
+  { id: '27', name: 'Legislação Trabalhista', code: 'LT', courseId: '8', workload: 60 },
+  // Curso 9 - Técnico em Segurança do Trabalho
+  { id: '28', name: 'NRs e Normas de Segurança', code: 'NR', courseId: '9', workload: 80 },
+  { id: '29', name: 'Ergonomia', code: 'ERG', courseId: '9', workload: 60 },
+  { id: '30', name: 'Prevenção de Acidentes', code: 'PA', courseId: '9', workload: 60 },
+  // Curso 10 - Técnico em Agronegócio
+  { id: '31', name: 'Gestão Rural', code: 'GR', courseId: '10', workload: 60 },
+  { id: '32', name: 'Agricultura e Pecuária', code: 'AP2', courseId: '10', workload: 80 },
+  { id: '33', name: 'Comercialização Agrícola', code: 'CA', courseId: '10', workload: 60 },
+  // Curso 11 - Técnico em Farmácia
+  { id: '34', name: 'Farmácia Clínica', code: 'FC', courseId: '11', workload: 80 },
+  { id: '35', name: 'Manipulação de Medicamentos', code: 'MM', courseId: '11', workload: 80 },
+  { id: '36', name: 'Farmacologia', code: 'FAR', courseId: '11', workload: 60 },
 ];
 
 // Turmas/Aulas (compatibilidade com API existente)
@@ -120,7 +296,7 @@ export const mockClasses = [
   {
     id: '2',
     subjectId: '2',
-    teacherId: '2',
+    teacherId: '1',
     schedule: '10:00 - 12:00',
     dayOfWeek: 2,
     room: 'Sala 102',
@@ -130,7 +306,7 @@ export const mockClasses = [
   {
     id: '3',
     subjectId: '3',
-    teacherId: '3',
+    teacherId: '1',
     schedule: '14:00 - 16:00',
     dayOfWeek: 3,
     room: 'Sala 103',
@@ -150,7 +326,7 @@ export const mockClasses = [
   {
     id: '11',
     subjectId: '2',
-    teacherId: '2',
+    teacherId: '1',
     schedule: '10:00 - 12:00',
     dayOfWeek: 3,
     room: 'Sala 102',
@@ -160,7 +336,7 @@ export const mockClasses = [
   {
     id: '4',
     subjectId: '2',
-    teacherId: '2',
+    teacherId: '1',
     schedule: '10:00 - 12:00',
     dayOfWeek: 1,
     room: 'Sala 102',
@@ -170,7 +346,7 @@ export const mockClasses = [
   {
     id: '5',
     subjectId: '3',
-    teacherId: '3',
+    teacherId: '1',
     schedule: '14:00 - 16:00',
     dayOfWeek: 1,
     room: 'Sala 103',
@@ -190,7 +366,7 @@ export const mockClasses = [
   {
     id: '7',
     subjectId: '3',
-    teacherId: '3',
+    teacherId: '1',
     schedule: '14:00 - 16:00',
     dayOfWeek: 4,
     room: 'Sala 103',
@@ -210,7 +386,7 @@ export const mockClasses = [
   {
     id: '9',
     subjectId: '2',
-    teacherId: '2',
+    teacherId: '1',
     schedule: '10:00 - 12:00',
     dayOfWeek: 5,
     room: 'Sala 102',
@@ -230,7 +406,7 @@ export const mockClasses = [
   {
     id: '13',
     subjectId: '3',
-    teacherId: '3',
+    teacherId: '1',
     schedule: '14:00 - 16:00',
     dayOfWeek: 0,
     room: 'Sala 103',
@@ -245,6 +421,12 @@ export const mockClasses = [
   { id: '30', subjectId: '1', teacherId: '1', schedule: '08:00-10:00', dayOfWeek: 1, room: 'Sala 101', semester: '2024.2', location: { latitude: -15.835214, longitude: -48.012034, radius: 500 } },
   { id: '31', subjectId: '2', teacherId: '2', schedule: '10:00-12:00', dayOfWeek: 2, room: 'Sala 102', semester: '2024.2', location: { latitude: -15.835214, longitude: -48.012034, radius: 500 } },
   { id: '32', subjectId: '3', teacherId: '3', schedule: '14:00-16:00', dayOfWeek: 3, room: 'Sala 103', semester: '2024.2', location: { latitude: -15.835214, longitude: -48.012034, radius: 500 } },
+  // Turmas dos demais cursos SENAC MG - 2024.1 (atribuídas ao professor 1 para simulação)
+  { id: '40', subjectId: '6', teacherId: '1', schedule: '08:00-10:00', dayOfWeek: 1, room: 'Sala 201', semester: '2024.1', location: { latitude: -15.835214, longitude: -48.012034, radius: 500 } },
+  { id: '41', subjectId: '7', teacherId: '1', schedule: '10:00-12:00', dayOfWeek: 2, room: 'Sala 201', semester: '2024.1', location: { latitude: -15.835214, longitude: -48.012034, radius: 500 } },
+  { id: '42', subjectId: '10', teacherId: '1', schedule: '14:00-16:00', dayOfWeek: 1, room: 'Lab. Redes 1', semester: '2024.1', location: { latitude: -15.835214, longitude: -48.012034, radius: 500 } },
+  { id: '43', subjectId: '13', teacherId: '1', schedule: '08:00-12:00', dayOfWeek: 2, room: 'Lab. Enfermagem', semester: '2024.1', location: { latitude: -15.835214, longitude: -48.012034, radius: 500 } },
+  { id: '44', subjectId: '16', teacherId: '1', schedule: '14:00-16:00', dayOfWeek: 3, room: 'Sala 202', semester: '2024.1', location: { latitude: -15.835214, longitude: -48.012034, radius: 500 } },
 ];
 
 // Aulas - Organizado por dia com hora e professor responsável
@@ -294,8 +476,8 @@ export const mockAulas = [
     horaFim: '12:00',
     disciplina: 'Banco de Dados',
     subjectId: '2',
-    professor: 'Carlos Oliveira',
-    teacherId: '2',
+    professor: 'Maria Santos',
+    teacherId: '1',
     sala: 'Sala 102',
     semester: '2024.1',
     resumo: 'Modelagem de dados e SQL. Normalização, consultas e integração com aplicações.',
@@ -329,8 +511,8 @@ export const mockAulas = [
     horaFim: '16:00',
     disciplina: 'Desenvolvimento Web',
     subjectId: '3',
-    professor: 'Ana Ferreira',
-    teacherId: '3',
+    professor: 'Maria Santos',
+    teacherId: '1',
     sala: 'Sala 103',
     semester: '2024.1',
     resumo: 'HTML5, CSS3 e JavaScript. Componentes reutilizáveis e responsividade.',
@@ -364,8 +546,8 @@ export const mockAulas = [
     horaFim: '16:00',
     disciplina: 'Banco de Dados',
     subjectId: '2',
-    professor: 'Carlos Oliveira',
-    teacherId: '2',
+    professor: 'Maria Santos',
+    teacherId: '1',
     sala: 'Sala 102',
     semester: '2024.1',
     resumo: 'Modelagem de dados e SQL. Normalização, consultas e integração com aplicações.',
@@ -397,8 +579,8 @@ export const mockAulas = [
     horaFim: '10:00',
     disciplina: 'Desenvolvimento Web',
     subjectId: '3',
-    professor: 'Ana Ferreira',
-    teacherId: '3',
+    professor: 'Maria Santos',
+    teacherId: '1',
     sala: 'Sala 103',
     semester: '2024.1',
     resumo: 'HTML5, CSS3 e JavaScript. Componentes reutilizáveis e responsividade.',
@@ -461,8 +643,8 @@ export const mockAulas = [
     horaFim: '12:00',
     disciplina: 'Banco de Dados',
     subjectId: '2',
-    professor: 'Carlos Oliveira',
-    teacherId: '2',
+    professor: 'Maria Santos',
+    teacherId: '1',
     sala: 'Sala 102',
     semester: '2024.1',
     resumo: 'Modelagem de dados e SQL. Normalização, consultas e integração com aplicações.',
@@ -492,8 +674,8 @@ export const mockAulas = [
     horaFim: '16:00',
     disciplina: 'Desenvolvimento Web',
     subjectId: '3',
-    professor: 'Ana Ferreira',
-    teacherId: '3',
+    professor: 'Maria Santos',
+    teacherId: '1',
     sala: 'Sala 103',
     semester: '2024.1',
     resumo: 'Frameworks modernos. React, Vue e boas práticas de desenvolvimento.',
@@ -524,8 +706,8 @@ export const mockAulas = [
     horaFim: '10:00',
     disciplina: 'Banco de Dados',
     subjectId: '2',
-    professor: 'Carlos Oliveira',
-    teacherId: '2',
+    professor: 'Maria Santos',
+    teacherId: '1',
     sala: 'Sala 102',
     semester: '2024.1',
     resumo: 'NoSQL e bancos documentais. MongoDB e padrões de modelagem.',
@@ -588,8 +770,8 @@ export const mockAulas = [
     horaFim: '16:00',
     disciplina: 'Desenvolvimento Web',
     subjectId: '3',
-    professor: 'Ana Ferreira',
-    teacherId: '3',
+    professor: 'Maria Santos',
+    teacherId: '1',
     sala: 'Sala 103',
     semester: '2024.1',
     resumo: 'Frameworks modernos. React, Vue e boas práticas de desenvolvimento.',
@@ -650,8 +832,8 @@ export const mockAulas = [
     horaFim: '12:00',
     disciplina: 'Banco de Dados',
     subjectId: '2',
-    professor: 'Carlos Oliveira',
-    teacherId: '2',
+    professor: 'Maria Santos',
+    teacherId: '1',
     sala: 'Sala 102',
     semester: '2024.1',
     resumo: 'Modelagem de dados e SQL. Normalização, consultas e integração com aplicações.',
@@ -680,8 +862,8 @@ export const mockAulas = [
     horaFim: '16:00',
     disciplina: 'Desenvolvimento Web',
     subjectId: '3',
-    professor: 'Ana Ferreira',
-    teacherId: '3',
+    professor: 'Maria Santos',
+    teacherId: '1',
     sala: 'Sala 103',
     semester: '2024.1',
     resumo: 'Frameworks modernos. React, Vue e boas práticas de desenvolvimento.',
@@ -744,8 +926,8 @@ export const mockAulas = [
     horaFim: '16:00',
     disciplina: 'Desenvolvimento Web',
     subjectId: '3',
-    professor: 'Ana Ferreira',
-    teacherId: '3',
+    professor: 'Maria Santos',
+    teacherId: '1',
     sala: 'Sala 103',
     semester: '2024.1',
     resumo: 'Aula especial de revisão.',
@@ -996,6 +1178,20 @@ export const mockCalls = [
   // Turma 6 - Programação Mobile (teacher 1)
   { id: 'c9', classId: '6', teacherId: '1', startTime: '2024-03-14T10:00:00', endTime: '2024-03-14T12:00:00', status: 'ended', attendanceList: [] },
   { id: 'c10', classId: '6', teacherId: '1', startTime: '2024-03-07T10:00:00', endTime: '2024-03-07T12:00:00', status: 'ended', attendanceList: [] },
+  // Turma 2 - Banco de Dados
+  { id: 'c11', classId: '2', teacherId: '1', startTime: '2024-03-12T10:00:00', endTime: '2024-03-12T12:00:00', status: 'ended', attendanceList: [] },
+  // Turma 3 - Desenvolvimento Web
+  { id: 'c12', classId: '3', teacherId: '1', startTime: '2024-03-13T14:00:00', endTime: '2024-03-13T16:00:00', status: 'ended', attendanceList: [] },
+  // Turma 40 - Gestão de Pessoas (Administração)
+  { id: 'c13', classId: '40', teacherId: '1', startTime: '2024-03-11T08:00:00', endTime: '2024-03-11T10:00:00', status: 'ended', attendanceList: [] },
+  // Turma 41 - Contabilidade e Finanças (Administração)
+  { id: 'c14', classId: '41', teacherId: '1', startTime: '2024-03-12T10:00:00', endTime: '2024-03-12T12:00:00', status: 'ended', attendanceList: [] },
+  // Turma 42 - Redes de Computadores
+  { id: 'c15', classId: '42', teacherId: '1', startTime: '2024-03-11T14:00:00', endTime: '2024-03-11T16:00:00', status: 'ended', attendanceList: [] },
+  // Turma 43 - Fundamentos de Enfermagem
+  { id: 'c16', classId: '43', teacherId: '1', startTime: '2024-03-12T08:00:00', endTime: '2024-03-12T12:00:00', status: 'ended', attendanceList: [] },
+  // Turma 44 - Gestão de Estoques (Logística)
+  { id: 'c17', classId: '44', teacherId: '1', startTime: '2024-03-13T14:00:00', endTime: '2024-03-13T16:00:00', status: 'ended', attendanceList: [] },
 ];
 
 // Pagamentos

@@ -200,7 +200,7 @@ const styles = StyleSheet.create({
   backBtnWrapper: {
     position: 'absolute',
     top: 48,
-    left: spacing.base,
+    left: spacing.lg,
     zIndex: 10,
   },
   backBtn: {
@@ -220,7 +220,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     alignSelf: 'flex-start',
-    marginHorizontal: spacing.base,
+    marginHorizontal: spacing.lg,
     marginBottom: spacing.base,
     paddingHorizontal: spacing.base,
     paddingVertical: spacing.sm,
@@ -235,7 +235,7 @@ const styles = StyleSheet.create({
   },
   realtimeText: { color: '#FFF', fontSize: 13, fontWeight: '600' },
   counterCard: {
-    marginHorizontal: spacing.base,
+    marginHorizontal: spacing.lg,
     marginBottom: spacing.base,
     padding: spacing.lg,
     alignItems: 'center',
@@ -245,7 +245,7 @@ const styles = StyleSheet.create({
   counterLabel: { fontSize: 14 },
   tryingLabel: { fontSize: 13, marginTop: spacing.xs },
   list: { flex: 1 },
-  listContent: { padding: spacing.base, paddingBottom: 100 },
+  listContent: { paddingHorizontal: spacing.lg, paddingVertical: spacing.base, paddingBottom: 100 },
   alunoRow: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -258,7 +258,8 @@ const styles = StyleSheet.create({
   gpsLabel: { fontSize: 12, marginTop: 2 },
   status: { fontSize: 14, fontWeight: '600' },
   footer: {
-    padding: spacing.lg,
+    paddingHorizontal: spacing.lg,
+    paddingVertical: spacing.lg,
     borderTopWidth: 1,
     borderTopColor: 'rgba(0,0,0,0.06)',
   },

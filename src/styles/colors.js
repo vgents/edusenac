@@ -99,12 +99,14 @@ export const lightTheme = {
   background: '#FFFFFF',
   surface: darkBlue[50],
   primary: blue[500],
+  primaryText: '#FFFFFF',
   primaryLight: blue[100],
   accent: orange[500],
   accentLight: orange[200],
   text: darkBlue[900],
   textSecondary: darkBlue[400],
   border: darkBlue[200],
+  borderWidth: 1,
   ...semantic,
 };
 
@@ -113,11 +115,39 @@ export const darkTheme = {
   background: darkBlue[900],
   surface: darkBlue[800],
   primary: blue[400],
+  primaryText: '#FFFFFF',
   primaryLight: blue[800],
   accent: orange[500],
   accentLight: orange[600],
   text: darkBlue[50],
   textSecondary: darkBlue[200],
   border: darkBlue[600],
+  borderWidth: 1,
   ...semantic,
+};
+
+// Alto contraste - preto com texto branco/amarelo (acessibilidade visual)
+// Fundo preto, texto branco, amarelo para links e elementos interativos
+const HIGH_CONTRAST_YELLOW = '#FFD700';
+const HIGH_CONTRAST_BG = '#000000';
+const HIGH_CONTRAST_SURFACE = '#1A1A1A';
+const HIGH_CONTRAST_TEXT = '#FFFFFF';
+const HIGH_CONTRAST_BORDER = '#FFFFFF';
+
+export const highContrastTheme = {
+  background: HIGH_CONTRAST_BG,
+  surface: HIGH_CONTRAST_SURFACE,
+  primary: HIGH_CONTRAST_YELLOW,
+  primaryText: '#000000',
+  primaryLight: HIGH_CONTRAST_YELLOW,
+  accent: HIGH_CONTRAST_YELLOW,
+  accentLight: HIGH_CONTRAST_YELLOW,
+  text: HIGH_CONTRAST_TEXT,
+  textSecondary: HIGH_CONTRAST_TEXT,
+  border: HIGH_CONTRAST_BORDER,
+  borderWidth: 2,
+  success: '#00FF00',
+  error: '#FF6B6B',
+  warning: HIGH_CONTRAST_YELLOW,
+  info: HIGH_CONTRAST_YELLOW,
 };

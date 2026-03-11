@@ -1,5 +1,5 @@
 /**
- * Agenda - Calendário, lista aulas do dia, status presença, drawer de detalhes
+ * Agenda - Calend?rio, lista aulas do dia, status presen?a, drawer de detalhes
  */
 
 import React, { useState, useEffect, useCallback } from 'react';
@@ -12,7 +12,9 @@ import {
   Pressable,
   Dimensions,
   Modal,
+  Platform,
 } from 'react-native';
+import { BlurView } from 'expo-blur';
 import Animated, {
   useSharedValue,
   useAnimatedStyle,
@@ -24,13 +26,14 @@ import { useAuth } from '../../context/AuthContext';
 import { useMenu } from '../../context/MenuContext';
 import { spacing } from '../../styles/spacing';
 import { headerStyles } from '../../styles/headerStyles';
+import { getSubjectIcon } from '../../utils/subjectIcons';
 import { SafeScreen, Icon } from '../../components/ui';
 import { getAulasByDate, getAttendanceByStudentAndDate } from '../../services/api';
 
 const { width } = Dimensions.get('window');
 const DRAWER_WIDTH = width * 0.8;
 
-const DAYS = ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'];
+const DAYS = ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'S?b'];
 
 const getDaysInMonth = (year, month) => {
   const first = new Date(year, month, 1);
@@ -41,7 +44,7 @@ const getDaysInMonth = (year, month) => {
 };
 
 export const AgendaScreen = () => {
-  const { theme } = useTheme();
+  const { theme, isDarkMode } = useTheme();
   const insets = useSafeAreaInsets();
   const { user } = useAuth();
   const { openMenu } = useMenu();
@@ -136,7 +139,7 @@ export const AgendaScreen = () => {
         ]}
         onPress={() => handleSelectDate(d)}
       >
-        <Text style={[styles.dateText, { color: selected ? '#FFF' : theme.text }]}>
+        <Text style={[styles.dateText, { color: selected ? theme.primaryText : theme.text }]}>
           {d}
         </Text>
       </TouchableOpacity>
@@ -154,7 +157,7 @@ export const AgendaScreen = () => {
       <ScrollView style={[styles.container, { backgroundColor: theme.background }]}>
         <View style={[styles.calendar, { backgroundColor: theme.surface }]}>
           <Text style={[styles.monthTitle, { color: theme.text }]}>
-            Março 2024
+            Mar?o 2024
           </Text>
           <View style={styles.daysRow}>
             {DAYS.map((d) => (
@@ -188,6 +191,7 @@ export const AgendaScreen = () => {
                 activeOpacity={0.7}
               >
                 <View style={styles.aulaHeader}>
+                  <Icon name={getSubjectIcon(aula.disciplina)} size={28} color={theme.primary} style={styles.aulaIcon} />
                   <Text style={[styles.aulaName, { color: theme.text }]}>
                     {aula.disciplina}
                   </Text>
@@ -214,7 +218,7 @@ export const AgendaScreen = () => {
                   </View>
                 </View>
                 <Text style={[styles.aulaTime, { color: theme.textSecondary }]}>
-                  {aula.hora} - {aula.horaFim} • {aula.professor}
+                  {aula.hora} - {aula.horaFim} ��� {aula.professor}
                 </Text>
               </TouchableOpacity>
             );
@@ -231,12 +235,32 @@ export const AgendaScreen = () => {
         <View style={styles.modalContainer}>
           <Pressable style={StyleSheet.absoluteFill} onPress={closeDrawer}>
             <Animated.View
-              style={[
-                styles.overlay,
-                overlayAnimatedStyle,
-                { backgroundColor: 'rgba(0,0,0,0.4)' },
-              ]}
-            />
+              style={[styles.overlay, overlayAnimatedStyle]}
+              pointerEvents="box-none"
+            >
+              {Platform.OS === 'web' ? (
+                <View style={styles.blurFallback} />
+              ) : (
+                <View style={StyleSheet.absoluteFill}>
+                  <BlurView
+                    intensity={120}
+                    tint={isDarkMode ? 'dark' : 'light'}
+                    style={StyleSheet.absoluteFill}
+                    experimentalBlurMethod="dimezisBlurView"
+                  />
+                  <View
+                    style={[
+                      StyleSheet.absoluteFill,
+                      {
+                        backgroundColor: isDarkMode
+                          ? 'rgba(10,22,40,0.15)'
+                          : 'rgba(255,255,255,0.08)',
+                      },
+                    ]}
+                  />
+                </View>
+              )}
+            </Animated.View>
           </Pressable>
           <Animated.View
             style={[
@@ -252,6 +276,7 @@ export const AgendaScreen = () => {
             {selectedAula && (
               <>
                 <View style={[styles.drawerHeader, { borderBottomColor: theme.border }]}>
+                  <Icon name={getSubjectIcon(selectedAula.disciplina)} size={28} color={theme.primary} style={styles.drawerTitleIcon} />
                   <Text style={[styles.drawerTitle, { color: theme.text }]}>
                     {selectedAula.disciplina}
                   </Text>
@@ -277,7 +302,7 @@ export const AgendaScreen = () => {
                   </View>
                   <View style={styles.detailRow}>
                     <Text style={[styles.detailLabel, { color: theme.textSecondary }]}>
-                      Horário
+                      Hor?rio
                     </Text>
                     <Text style={[styles.detailValue, { color: theme.text }]}>
                       {selectedAula.hora} - {selectedAula.horaFim}
@@ -373,7 +398,8 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
   },
-  aulaName: { fontSize: 16, fontWeight: '600' },
+  aulaIcon: { marginRight: spacing.sm },
+  aulaName: { fontSize: 16, fontWeight: '600', flex: 1 },
   badge: {
     paddingHorizontal: spacing.sm,
     paddingVertical: spacing.xs,
@@ -389,6 +415,11 @@ const styles = StyleSheet.create({
   },
   overlay: {
     ...StyleSheet.absoluteFillObject,
+    overflow: 'hidden',
+  },
+  blurFallback: {
+    ...StyleSheet.absoluteFillObject,
+    backgroundColor: 'rgba(0,0,0,0.4)',
   },
   drawer: {
     width: DRAWER_WIDTH,
@@ -406,6 +437,7 @@ const styles = StyleSheet.create({
     padding: spacing.base,
     borderBottomWidth: 1,
   },
+  drawerTitleIcon: { marginRight: spacing.sm },
   drawerTitle: {
     fontSize: 18,
     fontWeight: '600',

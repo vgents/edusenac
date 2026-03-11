@@ -25,6 +25,7 @@ import {
 import { Button, SafeScreen, Icon } from '../../components/ui';
 import { spacing } from '../../styles/spacing';
 import { headerStyles } from '../../styles/headerStyles';
+import { getSubjectIcon } from '../../utils/subjectIcons';
 
 export const TeacherHomeScreen = ({ navigation }) => {
   const { theme } = useTheme();
@@ -56,17 +57,61 @@ export const TeacherHomeScreen = ({ navigation }) => {
     const today = new Date().getDay();
     const now = new Date().getHours() * 60 + new Date().getMinutes();
 
-    const current = classes.find((c) => {
-      if (c.dayOfWeek !== today) return false;
-      const parts = c.schedule.split(/[\s-]+/).filter(Boolean);
+    const getStartMinutes = (c) => {
+      const parts = (c.schedule || '').split(/[\s-]+/).filter(Boolean);
       const startStr = parts[0] || '08:00';
       const [h, m] = startStr.split(':').map(Number);
-      const start = h * 60 + m;
+      return (h || 0) * 60 + (m || 0);
+    };
+
+    const current = classes.find((c) => {
+      if (c.dayOfWeek !== today) return false;
+      const start = getStartMinutes(c);
       return now >= start && now < start + 120;
     });
     setCurrentClass(current);
 
-    const next = classes.filter((c) => c.dayOfWeek >= today).slice(0, 4);
+    // Ordenar por dia e horário (cronológico); domingo (0) vem depois de sábado (6)
+    const isUpcoming = (c) => {
+      if (c.dayOfWeek > today) return true;
+      if (c.dayOfWeek < today) return today === 6 && c.dayOfWeek === 0; // domingo após sábado
+      return getStartMinutes(c) > now; // hoje, mas ainda não começou
+    };
+    const sortDay = (d) => (d === 0 ? 7 : d); // domingo = 7 para ordenar no fim da semana
+    const upcoming = classes
+      .filter(isUpcoming)
+      .sort((a, b) => {
+        const da = sortDay(a.dayOfWeek);
+        const db = sortDay(b.dayOfWeek);
+        if (da !== db) return da - db;
+        return getStartMinutes(a) - getStartMinutes(b);
+      });
+
+    // Priorizar matérias variadas: pegar até 6, preferindo disciplinas diferentes
+    const seenSubjects = new Set();
+    const next = [];
+    const maxNext = 6;
+    for (const c of upcoming) {
+      if (next.length >= maxNext) break;
+      const isNewSubject = !seenSubjects.has(c.subjectId);
+      if (isNewSubject || next.length < maxNext) {
+        next.push(c);
+        seenSubjects.add(c.subjectId);
+      }
+    }
+    // Se faltar preencher, completar com as próximas cronológicas
+    if (next.length < maxNext) {
+      for (const c of upcoming) {
+        if (next.length >= maxNext) break;
+        if (!next.some((x) => x.id === c.id)) next.push(c);
+      }
+      next.sort((a, b) => {
+        const da = sortDay(a.dayOfWeek);
+        const db = sortDay(b.dayOfWeek);
+        if (da !== db) return da - db;
+        return getStartMinutes(a) - getStartMinutes(b);
+      });
+    }
     setNextClasses(next);
 
     const names = {};
@@ -104,7 +149,7 @@ export const TeacherHomeScreen = ({ navigation }) => {
               {teacher?.photo ? (
                 <Image source={{ uri: teacher.photo }} style={styles.avatarImage} />
               ) : (
-                <Icon name="person" size={32} color="#FFFFFF" />
+                <Icon name="person" size={32} color={theme.primaryText} />
               )}
             </View>
           </TouchableOpacity>
@@ -198,7 +243,7 @@ export const TeacherHomeScreen = ({ navigation }) => {
                   Aula em andamento
                 </Text>
                 <View style={[styles.badge, { backgroundColor: theme.success }]}>
-                  <Text style={styles.badgeText}>Ao vivo</Text>
+                  <Text style={[styles.badgeText, { color: theme.primaryText }]}>Ao vivo</Text>
                 </View>
               </View>
               <Text style={[styles.className, { color: theme.text }]}>
@@ -245,7 +290,7 @@ export const TeacherHomeScreen = ({ navigation }) => {
                     : navigation.navigate('HistoricoChamadas', { classId: c.id })
                 }
               >
-                  <Icon name="book-outline" size={24} color={theme.primary} />
+                  <Icon name={getSubjectIcon(subjectNames[c.subjectId] || '')} size={24} color={theme.primary} />
                   <View style={styles.classInfo}>
                     <Text style={[styles.className, { color: theme.text }]}>
                       {subjectNames[c.subjectId] || 'Disciplina'}
@@ -273,9 +318,9 @@ const styles = StyleSheet.create({
     minWidth: 0,
   },
   avatar: {
-    width: 52,
-    height: 52,
-    borderRadius: 26,
+    width: 48,
+    height: 48,
+    borderRadius: 24,
     justifyContent: 'center',
     alignItems: 'center',
     marginRight: spacing.base,
@@ -300,6 +345,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     marginHorizontal: spacing.lg,
+    marginTop: spacing.lg,
     marginBottom: spacing.base,
     paddingHorizontal: spacing.base,
     paddingVertical: spacing.sm,
@@ -317,7 +363,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     gap: spacing.base,
     paddingHorizontal: spacing.lg,
-    marginBottom: spacing.lg,
+    marginBottom: spacing.xl,
   },
   indicatorCard: {
     flex: 1,

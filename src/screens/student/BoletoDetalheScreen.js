@@ -94,7 +94,7 @@ export const BoletoDetalheScreen = ({ route, navigation }) => {
           <Text style={[styles.value, { color: theme.text }]}>{payment.dueDate}</Text>
 
           <View style={[styles.badge, { backgroundColor: payment.status === 'paid' ? theme.success : theme.warning }]}>
-            <Text style={styles.badgeText}>{payment.status === 'paid' ? 'Pago' : 'Pendente'}</Text>
+            <Text style={[styles.badgeText, { color: theme.primaryText }]}>{payment.status === 'paid' ? 'Pago' : 'Pendente'}</Text>
           </View>
         </View>
 

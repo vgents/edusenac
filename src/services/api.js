@@ -15,6 +15,8 @@ import {
   mockStudents,
   mockNotifications,
   mockCalls,
+  mockCourses,
+  mockSubjects,
 } from './mockData';
 
 // Inicializar dados na primeira execução
@@ -35,7 +37,13 @@ export const ensureDataInitialized = async () => {
       if (storedAulas.length < mockAulas.length || precisaMigrar) {
         await database.setItem(KEYS.AULAS, mockAulas);
       }
-      if (storedClasses.length < mockClasses.length || precisaMigrar) {
+      // Migrar turmas: dados antigos tinham teacherId 2/3 em disciplinas que agora são do professor 1
+      const class2 = storedClasses.find((c) => c.id === '2');
+      const precisaMigrarTurmas =
+        precisaMigrar ||
+        storedClasses.length < mockClasses.length ||
+        (class2?.subjectId === '2' && class2?.teacherId !== '1');
+      if (precisaMigrarTurmas) {
         await database.setItem(KEYS.CLASSES, mockClasses);
       }
       const storedAttendance = await database.getItem(KEYS.ATTENDANCE) || [];
@@ -57,7 +65,9 @@ export const ensureDataInitialized = async () => {
       }
       const storedStudents = await database.getItem(KEYS.STUDENTS) || [];
       const student1 = storedStudents.find((s) => s.id === '1');
-      if (student1 && !student1.photo) {
+      if (storedStudents.length < mockStudents.length) {
+        await database.setItem(KEYS.STUDENTS, mockStudents);
+      } else if (student1 && !student1.photo) {
         const updated = storedStudents.map((s) =>
           s.id === '1' ? { ...s, photo: mockStudents[0].photo } : s
         );
@@ -70,6 +80,14 @@ export const ensureDataInitialized = async () => {
       const storedCalls = await database.getItem(KEYS.CALLS) || [];
       if (storedCalls.length < mockCalls.length) {
         await database.setItem(KEYS.CALLS, mockCalls);
+      }
+      const storedCourses = await database.getItem(KEYS.COURSES) || [];
+      if (storedCourses.length < mockCourses.length) {
+        await database.setItem(KEYS.COURSES, mockCourses);
+      }
+      const storedSubjects = await database.getItem(KEYS.SUBJECTS) || [];
+      if (storedSubjects.length < mockSubjects.length) {
+        await database.setItem(KEYS.SUBJECTS, mockSubjects);
       }
     }
     initialized = true;
@@ -149,6 +167,7 @@ export const getSubjectById = async (id) => {
 
 // Classes
 export const getClasses = async (filters = {}) => {
+  await ensureDataInitialized();
   const classes = await database.getItem(KEYS.CLASSES) || [];
   let result = [...classes];
   if (filters.teacherId) result = result.filter((c) => c.teacherId === filters.teacherId);
@@ -415,6 +434,7 @@ export const getCallById = async (id) => {
 };
 
 export const getStudentsByClassId = async (classId) => {
+  await ensureDataInitialized();
   const classes = await database.getItem(KEYS.CLASSES) || [];
   const classData = classes.find((c) => c.id === classId);
   if (!classData?.subjectId) return [];

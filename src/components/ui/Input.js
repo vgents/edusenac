@@ -29,6 +29,7 @@ export const Input = ({
           {
             backgroundColor: theme.background,
             borderColor: error ? theme.error : theme.border,
+            borderWidth: theme.borderWidth ?? 1,
             color: theme.text,
           },
         ]}

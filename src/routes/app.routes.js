@@ -221,6 +221,7 @@ export const TeacherRoutes = () => (
     <Stack.Screen name="Notificacoes" component={NotificacoesScreen} />
     <Stack.Screen name="Busca" component={BuscaScreen} />
     <Stack.Screen name="Configuracoes" component={ConfiguracoesScreen} />
+    <Stack.Screen name="AlterarSenha" component={AlterarSenhaScreen} />
     <Stack.Screen name="Termos" component={TermosScreen} />
     <Stack.Screen name="Sobre" component={SobreScreen} />
   </Stack.Navigator>
